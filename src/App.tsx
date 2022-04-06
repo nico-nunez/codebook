@@ -1,5 +1,7 @@
+import { OnChange } from '@monaco-editor/react';
 import * as esbuild from 'esbuild-wasm';
 import { useEffect, useRef, useState } from 'react';
+import CodeEditor from './components/code-editor';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
 
@@ -42,6 +44,10 @@ const App = () => {
     }
   };
 
+  const onInputChange: OnChange = (value, event) => {
+    if (value) setInput(value);
+  };
+
   const html = `
     <html>
       <head></head>
@@ -73,12 +79,7 @@ const App = () => {
 
   return (
     <div>
-      <textarea
-        onChange={(e) => setInput(e.target.value)}
-        value={input}
-        rows={20}
-        cols={80}
-      ></textarea>
+      <CodeEditor initialValue="const a = 1;" onInputChange={onInputChange} />
       <div>
         <button onClick={onClick}>Submit</button>
       </div>
