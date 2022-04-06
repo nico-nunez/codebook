@@ -1,3 +1,4 @@
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import * as esbuild from 'esbuild-wasm';
 import { useEffect, useRef, useState } from 'react';
 import CodeEditor from './components/code-editor';
@@ -19,8 +20,6 @@ const App = () => {
       wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
     });
   };
-
-  // const onFormatClick = () => {};
 
   const onClick = async () => {
     if (!esbuildRef.current) return;
@@ -66,7 +65,7 @@ const App = () => {
                 const header = document.createElement('h4');
                 const msg = document.createElement('div');
                 msg.style.color = 'red';
-                header.textContent = 'Runtime error';
+                header.textContent = 'Runtime error:';
                 msg.appendChild(header);
                 msg.appendChild(errText);
                 root.appendChild(msg);
@@ -79,18 +78,24 @@ const App = () => {
   `;
 
   return (
-    <div>
+    <div className="m-2">
       <CodeEditor initialValue="const a = 1;" onInputChange={onInputChange} />
-      <div>
-        <button onClick={onClick}>Submit</button>
+      <div className="m-3">
+        <button
+          className="button button-format is-primary mg-medium"
+          onClick={onClick}
+        >
+          Submit
+        </button>
       </div>
       <iframe
         ref={iframeRef}
         srcDoc={html}
         sandbox="allow-scripts"
-        width="700px"
+        width="100%"
         height="500px"
         title="display-results"
+        style={{ backgroundColor: 'white' }}
       ></iframe>
     </div>
   );
