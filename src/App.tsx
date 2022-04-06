@@ -1,4 +1,3 @@
-import { OnChange } from '@monaco-editor/react';
 import * as esbuild from 'esbuild-wasm';
 import { useEffect, useRef, useState } from 'react';
 import CodeEditor from './components/code-editor';
@@ -20,6 +19,8 @@ const App = () => {
       wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
     });
   };
+
+  // const onFormatClick = () => {};
 
   const onClick = async () => {
     if (!esbuildRef.current) return;
@@ -44,8 +45,8 @@ const App = () => {
     }
   };
 
-  const onInputChange: OnChange = (value, event) => {
-    if (value) setInput(value);
+  const onInputChange = (value: string) => {
+    setInput(value);
   };
 
   const html = `
