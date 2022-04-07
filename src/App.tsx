@@ -1,14 +1,17 @@
-import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import * as esbuild from 'esbuild-wasm';
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import { useEffect, useRef, useState } from 'react';
-import CodeEditor from './components/code-editor';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
 
+import Preview from './components/Preview/Preview';
+import CodeEditor from './components/Editor/code-editor';
+
 const App = () => {
   const [input, setInput] = useState('');
+  const [code, setCode] = useState('');
+  const [error, setError] = useState(null);
   const esbuildRef = useRef<any>();
-  const iframeRef = useRef<any>();
 
   useEffect(() => {
     startService();
@@ -23,7 +26,7 @@ const App = () => {
 
   const onClick = async () => {
     if (!esbuildRef.current) return;
-    iframeRef.current.srcdoc = html;
+    setError(null);
     try {
       const result = await esbuildRef.current.build({
         entryPoints: ['index.js'],
@@ -35,47 +38,15 @@ const App = () => {
           global: 'window',
         },
       });
-      iframeRef.current.contentWindow.postMessage(
-        result.outputFiles[0].text,
-        '*'
-      );
-    } catch (err) {
-      iframeRef.current.contentWindow.postMessage({ error: err }, '*');
+      setCode(result.outputFiles[0].text);
+    } catch (err: any) {
+      setError(err);
     }
   };
 
   const onInputChange = (value: string) => {
     setInput(value);
   };
-
-  const html = `
-    <html>
-      <head></head>
-        <body>
-          <div id="root"></div>
-          <script>
-            window.addEventListener('message', event => {
-              try {
-                const { error } = event.data;
-                if (error) throw error;
-                eval(event.data);
-              } catch (err) {
-                const root = document.querySelector('#root');
-                const errText = document.createTextNode(err);
-                const header = document.createElement('h4');
-                const msg = document.createElement('div');
-                msg.style.color = 'red';
-                header.textContent = 'Runtime error:';
-                msg.appendChild(header);
-                msg.appendChild(errText);
-                root.appendChild(msg);
-                console.error(err);
-              };
-            });
-          </script>
-        </body>
-    </html>
-  `;
 
   return (
     <div className="m-2">
@@ -88,15 +59,7 @@ const App = () => {
           Submit
         </button>
       </div>
-      <iframe
-        ref={iframeRef}
-        srcDoc={html}
-        sandbox="allow-scripts"
-        width="100%"
-        height="500px"
-        title="display-results"
-        style={{ backgroundColor: 'white' }}
-      ></iframe>
+      <Preview result={code} error={error} />
     </div>
   );
 };

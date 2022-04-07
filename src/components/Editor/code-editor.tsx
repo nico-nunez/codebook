@@ -1,9 +1,15 @@
 import './code-editor.css';
-import MonacoEditor, { OnChange, OnMount } from '@monaco-editor/react';
-import { editor } from 'monaco-editor';
-import prettier from 'prettier';
-import parser from 'prettier/parser-babel';
 import { useRef } from 'react';
+import prettier from 'prettier';
+import { editor } from 'monaco-editor';
+import {parse} from "@babel/parser";
+import traverse from '@babel/traverse';
+import parser from 'prettier/parser-babel';
+import MonacoJSXHighlighter, { JSXTypes } from 'monaco-jsx-highlighter';
+import MonacoEditor, { OnChange, OnMount } from '@monaco-editor/react';
+
+JSXTypes.JSXText.options.inlineClassName = require('./syntax.css');
+
 export interface CodeEditorProps {
   initialValue: string;
   onInputChange(value: string): void;
@@ -16,7 +22,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
 
   const onEditorMount: OnMount = (editor, monaco) => {
-    if (editor) editorRef.current = editor;
+    editorRef.current = editor;
+    const jsxHighlighter = new MonacoJSXHighlighter(monaco, parse, traverse, editor);
+    jsxHighlighter.highlightOnDidChangeModelContent(100);
+    jsxHighlighter.addJSXCommentCommand();
   };
 
   const onEditorInputChange: OnChange = (value, evt) => {
@@ -30,7 +39,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       parser: 'babel',
       plugins: [parser],
       singleQuote: true,
-    });
+    }).replace(/\n$/, '');
     editorRef.current.setValue(formatted);
   };
 
