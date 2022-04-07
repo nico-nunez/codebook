@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 interface PreviewProps {
   result: string;
   error: string | null;
-};
+}
 
 export const html = `
     <html>
@@ -34,7 +34,7 @@ export const html = `
     </html>
   `;
 
-const Preview: React.FC<PreviewProps> = ({result, error}) => {
+const Preview: React.FC<PreviewProps> = ({ result, error }) => {
   const iframeRef = useRef<any>();
   useEffect(() => {
     iframeRef.current.srcdoc = html;
@@ -44,19 +44,19 @@ const Preview: React.FC<PreviewProps> = ({result, error}) => {
       }
       iframeRef.current.contentWindow.postMessage(result, '*');
     }, 50);
-  }, [result,error]);
+  }, [result, error]);
 
   return (
     <iframe
-    ref={iframeRef}
-    srcDoc={html}
-    sandbox="allow-scripts"
-    width="100%"
-    height="500px"
-    title="display-results"
-    style={{ backgroundColor: 'white' }}
-  ></iframe>
-  )
-}
+      ref={iframeRef}
+      srcDoc={html}
+      sandbox="allow-scripts"
+      width="100%"
+      height="100%"
+      title="display-results"
+      style={{ backgroundColor: 'white' }}
+    ></iframe>
+  );
+};
 
 export default Preview;

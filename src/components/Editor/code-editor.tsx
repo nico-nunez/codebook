@@ -2,7 +2,7 @@ import './code-editor.css';
 import { useRef } from 'react';
 import prettier from 'prettier';
 import { editor } from 'monaco-editor';
-import {parse} from "@babel/parser";
+import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import parser from 'prettier/parser-babel';
 import MonacoJSXHighlighter, { JSXTypes } from 'monaco-jsx-highlighter';
@@ -23,7 +23,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const onEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
-    const jsxHighlighter = new MonacoJSXHighlighter(monaco, parse, traverse, editor);
+    const jsxHighlighter = new MonacoJSXHighlighter(
+      monaco,
+      parse,
+      traverse,
+      editor
+    );
     jsxHighlighter.highlightOnDidChangeModelContent(100);
     jsxHighlighter.addJSXCommentCommand();
   };
@@ -35,11 +40,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const onFormatClick = () => {
     if (!editorRef.current) return;
     const unformatted = editorRef.current.getValue();
-    const formatted = prettier.format(unformatted, {
-      parser: 'babel',
-      plugins: [parser],
-      singleQuote: true,
-    }).replace(/\n$/, '');
+    const formatted = prettier
+      .format(unformatted, {
+        parser: 'babel',
+        plugins: [parser],
+        singleQuote: true,
+      })
+      .replace(/\n$/, '');
     editorRef.current.setValue(formatted);
   };
 
@@ -52,7 +59,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         onMount={onEditorMount}
         onChange={onEditorInputChange}
         value={initialValue}
-        height="500px"
+        height="100%"
         defaultLanguage="javascript"
         theme="vs-dark"
         options={{
