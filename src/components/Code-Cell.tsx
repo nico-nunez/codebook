@@ -25,13 +25,15 @@ const CodeCell = () => {
   };
 
   return (
-    <div className="w-50">
+    <div className='w-50'>
       <Resizable direction="vertical">
         <div className="resizable-container">
-          <CodeEditor
-            initialValue="const a = 1;"
-            onInputChange={onInputChange}
-          />
+          <Resizable direction="horiztonal">
+            <CodeEditor
+              initialValue="const a = 1;"
+              onInputChange={onInputChange}
+            />
+          </Resizable>
           <Preview result={code} error={error} />
         </div>
       </Resizable>

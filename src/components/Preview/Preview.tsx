@@ -1,3 +1,4 @@
+import './preview.css';
 import { useEffect, useRef, useState } from 'react';
 
 interface PreviewProps {
@@ -47,15 +48,14 @@ const Preview: React.FC<PreviewProps> = ({ result, error }) => {
   }, [result, error]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      srcDoc={html}
-      sandbox="allow-scripts"
-      width="100%"
-      height="100%"
-      title="display-results"
-      style={{ backgroundColor: 'white' }}
-    ></iframe>
+    <div className="preview-wrapper">
+      <iframe
+        ref={iframeRef}
+        srcDoc={html}
+        sandbox="allow-scripts"
+        title="display-results"
+      ></iframe>
+    </div>
   );
 };
 

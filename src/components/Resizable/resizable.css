@@ -4,6 +4,11 @@
   flex-direction: row;
 }
 
+.resize-horizontal {
+  display: flex;
+  direction: row;
+}
+
 .react-resizable-handle {
   display: block;
   background-color: #37414b;
