@@ -2,8 +2,8 @@ import './preview.css';
 import { useEffect, useRef } from 'react';
 
 interface PreviewProps {
-	result: string;
-	error: string | null;
+  result: string;
+  error: string | null;
 }
 
 export const html = `
@@ -32,9 +32,7 @@ export const html = `
 
             window.addEventListener('message', event => {
               try {
-                const { code, error } = event.data;
-                if (error) return handleError(error);
-                eval(code);
+                eval(event.data);
               } catch (err) {
                 handleError(err);
               };
@@ -45,27 +43,28 @@ export const html = `
   `;
 
 const Preview: React.FC<PreviewProps> = ({ result, error }) => {
-	const iframeRef = useRef<any>();
-	useEffect(() => {
-		iframeRef.current.srcdoc = html;
-		setTimeout(() => {
-			if (error) {
-				iframeRef.current.contentWindow.postMessage({ error }, '*');
-			}
-			iframeRef.current.contentWindow.postMessage(result, '*');
-		}, 50);
-	}, [result, error]);
+  const iframeRef = useRef<any>();
+  useEffect(() => {
+    iframeRef.current.srcdoc = html;
+    setTimeout(() => {
+      if (error) {
+        iframeRef.current.contentWindow.postMessage({ error }, '*');
+      }
+      console.log(result);
+      iframeRef.current.contentWindow.postMessage(result, '*');
+    }, 50);
+  }, [result, error]);
 
-	return (
-		<div className="preview-wrapper">
-			<iframe
-				ref={iframeRef}
-				srcDoc={html}
-				sandbox="allow-scripts"
-				title="display-results"
-			></iframe>
-		</div>
-	);
+  return (
+    <div className="preview-wrapper">
+      <iframe
+        ref={iframeRef}
+        srcDoc={html}
+        sandbox="allow-scripts"
+        title="display-results"
+      ></iframe>
+    </div>
+  );
 };
 
 export default Preview;

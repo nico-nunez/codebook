@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
-import App from './App';
+import App from './components/App';
 
 const container = document.querySelector('#root');
 

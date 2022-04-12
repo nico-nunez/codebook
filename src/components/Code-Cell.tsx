@@ -4,41 +4,44 @@ import bundler from '../bundler';
 import Preview from './Preview/Preview';
 import CodeEditor from './Code-Editor/code-editor';
 import Resizable from './Resizable/Resizable';
+import { Cell } from '../state';
+import { useActions } from '../hooks/use-actions';
 
-const CodeCell = () => {
-	const [input, setInput] = useState('');
-	const [code, setCode] = useState('');
-	const [error, setError] = useState('');
+interface CodeCellProps {
+  cell: Cell;
+}
 
-	useEffect(() => {
-		const timer = setTimeout(async () => {
-			const { code, error } = await bundler(input);
-			setCode(code);
-			setError(error);
-		}, 1000);
+const CodeCell: React.FC<CodeCellProps> = ({ cell: { id, content } }) => {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+  const { updateCell } = useActions();
 
-		return () => clearTimeout(timer);
-	}, [input]);
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const { code, error } = await bundler(content);
+      setCode(code);
+      setError(error);
+    }, 1000);
 
-	const onInputChange = (value: string) => {
-		setInput(value);
-	};
+    return () => clearTimeout(timer);
+  }, [content]);
 
-	return (
-		<div className="w-50">
-			<Resizable direction="vertical">
-				<div className="resizable-container">
-					<Resizable direction="horiztonal">
-						<CodeEditor
-							initialValue="const a = 1;"
-							onInputChange={onInputChange}
-						/>
-					</Resizable>
-					<Preview result={code} error={error} />
-				</div>
-			</Resizable>
-		</div>
-	);
+  const onInputChange = (value: string) => {
+    updateCell(id, value);
+  };
+
+  return (
+    <div className="w-50">
+      <Resizable direction="vertical">
+        <div className="resizable-container">
+          <Resizable direction="horiztonal">
+            <CodeEditor initialValue={content} onInputChange={onInputChange} />
+          </Resizable>
+          <Preview result={code} error={error} />
+        </div>
+      </Resizable>
+    </div>
+  );
 };
 
 export default CodeCell;

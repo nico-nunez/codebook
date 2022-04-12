@@ -20,7 +20,7 @@ const initialState: CellState = {
 };
 
 const reducer = produce(
-  (state: CellState = initialState, action: Action): CellState | void => {
+  (state: CellState = initialState, action: Action): CellState => {
     switch (action.type) {
       case ActionType.UPDATE_CELL:
         state.data[action.payload.id].content = action.payload.content;
@@ -35,7 +35,7 @@ const reducer = produce(
         const { direction } = action.payload;
         const index = state.order.indexOf(action.payload.id);
         const targetIndex = direction === 'up' ? index - 1 : index + 1;
-        if (targetIndex < 0 || targetIndex >= state.order.length) return;
+        if (targetIndex < 0 || targetIndex >= state.order.length) return state;
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
         return state;
@@ -59,13 +59,12 @@ const reducer = produce(
       default:
         return state;
     }
-  }
+  },
+  initialState
 );
 
 const randomId = () => {
   return Math.random().toString(36).substring(2, 9);
 };
-
-console.log(randomId());
 
 export default reducer;
