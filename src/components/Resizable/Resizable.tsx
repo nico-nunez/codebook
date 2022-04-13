@@ -51,7 +51,7 @@ const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
-	}, []);
+	}, [width]);
 
 	return <ResizableBox {...boxProps}>{children}</ResizableBox>;
 };
