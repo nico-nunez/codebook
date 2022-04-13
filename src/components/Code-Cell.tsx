@@ -1,47 +1,44 @@
-import { useEffect, useState } from 'react';
-import bundler from '../bundler';
+import { useEffect } from 'react';
 
 import Preview from './Preview/Preview';
 import CodeEditor from './Code-Editor/code-editor';
 import Resizable from './Resizable/Resizable';
 import { Cell } from '../state';
 import { useActions } from '../hooks/use-actions';
+import { useTypedSelector } from '../hooks';
 
 interface CodeCellProps {
-  cell: Cell;
+	cell: Cell;
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell: { id, content } }) => {
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-  const { updateCell } = useActions();
+	const { updateCell, createBundle } = useActions();
+	const bundle = useTypedSelector((state) => state.bundles[id]);
 
-  useEffect(() => {
-    const timer = setTimeout(async () => {
-      const { code, error } = await bundler(content);
-      setCode(code);
-      setError(error);
-    }, 1000);
+	useEffect(() => {
+		const timer = setTimeout(async () => {
+			createBundle(id, content);
+		}, 1000);
 
-    return () => clearTimeout(timer);
-  }, [content]);
+		return () => clearTimeout(timer);
+	}, [content, id, createBundle]);
 
-  const onInputChange = (value: string) => {
-    updateCell(id, value);
-  };
+	const onInputChange = (value: string) => {
+		updateCell(id, value);
+	};
 
-  return (
-    <div className="w-50">
-      <Resizable direction="vertical">
-        <div className="resizable-container">
-          <Resizable direction="horiztonal">
-            <CodeEditor initialValue={content} onInputChange={onInputChange} />
-          </Resizable>
-          <Preview result={code} error={error} />
-        </div>
-      </Resizable>
-    </div>
-  );
+	return (
+		<div className="w-50">
+			<Resizable direction="vertical">
+				<div className="resizable-container">
+					<Resizable direction="horiztonal">
+						<CodeEditor initialValue={content} onInputChange={onInputChange} />
+					</Resizable>
+					{bundle && <Preview code={bundle.code} error={bundle.error} />}
+				</div>
+			</Resizable>
+		</div>
+	);
 };
 
 export default CodeCell;
