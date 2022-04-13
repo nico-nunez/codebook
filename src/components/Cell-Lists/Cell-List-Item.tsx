@@ -1,6 +1,6 @@
 import './Cell-List-Item.css';
 import TextEditor from '../Text-Editor/Text-editor';
-import CodeCell from '../Code-Cell';
+import CodeCell from '../Code-Cell/Code-Cell';
 import { Cell } from '../../state';
 
 import ActionBar from '../Action-Bar/Action-Bar';
