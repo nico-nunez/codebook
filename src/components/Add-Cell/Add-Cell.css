@@ -1,0 +1,16 @@
+.add-cell-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px;
+}
+
+.add-cell-divider {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: calc(100% - 40px);
+  height: 1px;
+  border-top: 1px solid black;
+}

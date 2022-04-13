@@ -2,6 +2,12 @@
   height: 30px;
   width: 100%;
   background-color: #37414b;
+  opacity: .25;
+  transition: opacity .2s;
+}
+
+.action-bar-wrapper:hover {
+  opacity: 1;
 }
 
 .action-bar {
