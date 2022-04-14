@@ -12,13 +12,13 @@ const AddCell: React.FC<AddCellProps> = ({ nextCellId }) => {
 		<div className="add-cell-wrapper">
 			<div className="add-cell-divider"></div>
 			<button
-				className="button is-medium"
+				className="button is-rounded"
 				onClick={() => insertCellBefore(nextCellId, 'code')}
 			>
 				+ Code
 			</button>
 			<button
-				className="button is-medium"
+				className="button is-rounded"
 				onClick={() => insertCellBefore(nextCellId, 'text')}
 			>
 				+ Text

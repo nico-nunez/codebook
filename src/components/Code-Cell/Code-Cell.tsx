@@ -5,7 +5,7 @@ import CodeEditor from '../Code-Editor/code-editor';
 import Resizable from '../Resizable/Resizable';
 import { Cell } from '../../state';
 import { useActions } from '../../hooks/use-actions';
-import { useTypedSelector } from '../../hooks';
+import { useTypedSelector, useCumulativeCode } from '../../hooks';
 
 interface CodeCellProps {
 	cell: Cell;
@@ -14,19 +14,20 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell: { id, content } }) => {
 	const { updateCell, createBundle } = useActions();
 	const bundle = useTypedSelector((state) => state.bundles[id]);
+	const cumulativeCode = useCumulativeCode(id);
 
 	useEffect(() => {
 		if (!bundle) {
-			createBundle(id, content);
+			createBundle(id, cumulativeCode);
 		}
 		const timer = setTimeout(async () => {
-			createBundle(id, content);
+			createBundle(id, cumulativeCode);
 		}, 1000);
 
 		return () => clearTimeout(timer);
 
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [content, id, createBundle]);
+	}, [cumulativeCode, id, createBundle]);
 
 	const onInputChange = (value: string) => {
 		updateCell(id, value);
