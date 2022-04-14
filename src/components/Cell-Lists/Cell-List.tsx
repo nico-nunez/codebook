@@ -10,7 +10,6 @@ const CellList: React.FC = () => {
 		return order.map((id, i) => {
 			return (
 				<React.Fragment key={id}>
-					<AddCell nextCellId={id} />
 					<CellListItem cell={data[id]} />
 				</React.Fragment>
 			);
@@ -18,8 +17,9 @@ const CellList: React.FC = () => {
 	});
 	return (
 		<div className="cell-list">
+			{/* <AddCell nextCellId={null} /> */}
 			{renderedCells}
-			<AddCell nextCellId={null} />
+			{/* <AddCell nextCellId={null} /> */}
 		</div>
 	);
 };
