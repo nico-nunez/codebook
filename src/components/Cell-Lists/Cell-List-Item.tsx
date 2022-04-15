@@ -3,7 +3,7 @@ import TextEditor from '../Text-Editor/Text-editor';
 import CodeCell from '../Code-Cell/Code-Cell';
 import { Cell } from '../../state';
 
-import ActionBar from '../Action-Bar/Action-Bar';
+import CellHeader from './Cell-List-Item-Header';
 
 interface CellListItemProps {
 	cell: Cell;
@@ -12,9 +12,7 @@ interface CellListItemProps {
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
 	return (
 		<div className="cell-list-item">
-			<div className="action-bar-wrapper">
-				<ActionBar id={cell.id} />
-			</div>
+			<CellHeader id={cell.id} />
 			{cell.type === 'code' ? (
 				<CodeCell cell={cell} />
 			) : (

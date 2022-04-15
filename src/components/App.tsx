@@ -1,14 +1,14 @@
 import { Provider } from 'react-redux';
 import { store } from '../state';
-import CellList from './Cell-Lists/Cell-List';
 import Navbar from './Navbar/Navbar';
+import CellsPage from './Cells-Page/Cells-Page';
 
 const App = () => {
 	return (
 		<Provider store={store}>
 			<div>
 				<Navbar />
-				<CellList />
+				<CellsPage />
 			</div>
 		</Provider>
 	);

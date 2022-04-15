@@ -14,20 +14,19 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell: { id, content } }) => {
 	const { updateCell, createBundle } = useActions();
 	const bundle = useTypedSelector((state) => state.bundles[id]);
-	const cumulativeCode = useCumulativeCode(id);
 
 	useEffect(() => {
 		if (!bundle) {
-			createBundle(id, cumulativeCode);
+			createBundle(id, content);
 		}
 		const timer = setTimeout(async () => {
-			createBundle(id, cumulativeCode);
+			createBundle(id, content);
 		}, 1000);
 
 		return () => clearTimeout(timer);
 
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [cumulativeCode, id, createBundle]);
+	}, [content, id, createBundle]);
 
 	const onInputChange = (value: string) => {
 		updateCell(id, value);
