@@ -3,24 +3,26 @@ import { ActionType } from '../action-types';
 import { Action } from '../actions';
 import { Cell } from '../cell';
 
-export interface CellState {
+export interface PageState {
 	loading: boolean;
 	error: string | null;
 	order: string[];
+	title: string;
 	data: {
 		[key: string]: Cell;
 	};
 }
 
-const initialState: CellState = {
+const initialState: PageState = {
 	loading: false,
 	error: null,
 	order: [],
+	title: 'Untitled-1',
 	data: {},
 };
 
 const reducer = produce(
-	(state: CellState = initialState, action: Action): CellState => {
+	(state: PageState = initialState, action: Action): PageState => {
 		switch (action.type) {
 			case ActionType.UPDATE_CELL:
 				state.data[action.payload.id].content = action.payload.content;

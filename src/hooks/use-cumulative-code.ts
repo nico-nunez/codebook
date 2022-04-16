@@ -2,7 +2,7 @@ import { useTypedSelector } from './use-type-selector';
 
 export const useCumulativeCode = (cellId: string) => {
 	return useTypedSelector((state) => {
-		const { data, order } = state.cells;
+		const { data, order } = state.page;
 		const showOp = `
       import _React from 'react';
       import _ReactDOM from 'react-dom';

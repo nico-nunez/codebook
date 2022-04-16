@@ -1,9 +1,9 @@
-import './Cell-List-Item.css';
+import './Cell.css';
 import TextEditor from '../Text-Editor/Text-editor';
 import CodeCell from '../Code-Cell/Code-Cell';
 import { Cell } from '../../state';
 
-import CellHeader from './Cell-List-Item-Header';
+import CellHeader from './Cell-Header';
 
 interface CellListItemProps {
 	cell: Cell;

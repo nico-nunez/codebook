@@ -1,9 +1,9 @@
-import './Cells-Page-Header.css';
+import './Page-Header.css';
 import ActionBar from '../Action-Bar/Action-Bar';
 import DropdownItem from '../Dropdown/Dropdown-item';
 import DropdownMenu from '../Dropdown/Dropdown-menu';
 
-const CellsPageHeader = () => {
+const PageHeader = () => {
 	const onImportPage = () => {
 		// TODO
 		console.log('import page');
@@ -42,4 +42,4 @@ const CellsPageHeader = () => {
 	);
 };
 
-export default CellsPageHeader;
+export default PageHeader;
