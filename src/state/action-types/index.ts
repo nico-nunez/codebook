@@ -8,6 +8,8 @@ export enum CellActionType {
 
 export enum PageActionType {
 	UPDATE_PAGE_NAME = 'update_page_name',
+	ADD_PAGE_IMPORT = 'add_page_import',
+	REMOVE_PAGE_IMPORT = 'remove_page_import',
 }
 
 export enum TabActionType {

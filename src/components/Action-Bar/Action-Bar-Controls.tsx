@@ -1,7 +1,6 @@
 import React from 'react';
-import { useActions } from '../../hooks';
 import { CellTypes } from '../../state';
-import ActionBarWrapper from './Action-Bar-Wrapper';
+import { useActions } from '../../hooks';
 import ActionButton from './Action-Button';
 
 interface ActionBarControlsProps {

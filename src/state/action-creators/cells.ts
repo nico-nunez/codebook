@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { CellActionType } from '../action-types';
+import { CellActionType, PageActionType } from '../action-types';
 import { TabActionType } from '../action-types';
 import { CreateTabAction } from '../actions';
 import {

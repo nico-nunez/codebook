@@ -1,13 +1,19 @@
 import './Cell.css';
 import TextCell from '../Text-Cell/Text-Cell';
 import CodeCell from '../Code-Cell/Code-Cell';
-import { Code_Cell, Text_Cell } from '../../state';
+import { CellTypes } from '../../state';
+import { useTypedSelector } from '../../hooks';
 
-interface CellListItemProps {
-	cell: Code_Cell | Text_Cell;
+interface CellItemProps {
+	id: string;
+	type: CellTypes;
 }
 
-const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
+const CellItem: React.FC<CellItemProps> = ({ id, type }) => {
+	const cell = useTypedSelector(({ cells }) => cells[type][id]);
+	// <REMOVE ---
+	console.log('cell render id:', id);
+	// ---/>
 	return (
 		<div className="cell-list-item">
 			{cell.type === 'code' ? (
@@ -19,4 +25,4 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
 	);
 };
 
-export default CellListItem;
+export default CellItem;

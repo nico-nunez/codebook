@@ -1,18 +1,19 @@
 import produce from 'immer';
 import { PageAction } from '../actions';
 import { PageActionType } from '../action-types';
-import { Cell, CellTypes } from '../cell';
 
 export interface PageState {
 	loading: boolean;
 	error: string | null;
 	name: string;
+	imports: string[];
 }
 
 const initialState: PageState = {
 	loading: false,
 	error: null,
 	name: 'New Page',
+	imports: [],
 };
 
 const reducer = produce(
@@ -20,6 +21,16 @@ const reducer = produce(
 		switch (action.type) {
 			case PageActionType.UPDATE_PAGE_NAME:
 				state.name = action.payload.name;
+				return state;
+
+			case PageActionType.ADD_PAGE_IMPORT:
+				state.imports.push(action.payload.id);
+				return state;
+
+			case PageActionType.REMOVE_PAGE_IMPORT:
+				state.imports = state.imports.filter(
+					(pageId) => pageId !== action.payload.id
+				);
 				return state;
 
 			default:

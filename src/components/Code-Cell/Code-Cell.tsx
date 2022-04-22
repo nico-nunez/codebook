@@ -7,7 +7,6 @@ import { useActions } from '../../hooks/use-actions';
 import { useTypedSelector, useCumulativeCode } from '../../hooks';
 import CodeCellActionBar from './Code-Cell-Action-Bar';
 import { Code_Cell, Tab } from '../../state';
-import { shallowEqual } from 'react-redux';
 
 interface CodeCellProps {
 	cell: Code_Cell;
@@ -20,10 +19,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 		const activeTab = tabs.data[cell.activeTab];
 		return { tabsOrder, activeTab };
 	});
-	const bundle = useTypedSelector(
-		({ bundles }) => bundles[cell.id],
-		shallowEqual
-	);
+	const bundle = useTypedSelector(({ bundles }) => bundles[cell.id]);
 	const { id: tabId, language, content } = activeTab;
 	useEffect(() => {
 		if (!bundle) {

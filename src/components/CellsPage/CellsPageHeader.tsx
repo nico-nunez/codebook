@@ -1,7 +1,12 @@
 import './CellsPageHeader.css';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
+import { useActions } from '../../hooks';
+interface PageHeaderProps {
+	pageName: string;
+}
 
-const PageHeader = () => {
+const PageHeader: React.FC<PageHeaderProps> = ({ pageName }) => {
+	const { updatePageName } = useActions();
 	const onImportPage = () => {
 		// TODO
 		console.log('import page');
@@ -9,6 +14,7 @@ const PageHeader = () => {
 
 	const onNewPage = () => {
 		//TODO
+
 		console.log('new page');
 	};
 
@@ -38,7 +44,7 @@ const PageHeader = () => {
 				</div>
 			</div>
 			<div className="page-title">
-				<span className="is-size-4 ml-6">Page Title</span>
+				<span className="is-size-4 ml-6">{pageName}</span>
 				<i className="fa-solid fa-pencil" onClick={onUpdateName}></i>
 			</div>
 			<div>

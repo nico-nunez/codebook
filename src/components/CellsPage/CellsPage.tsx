@@ -1,26 +1,30 @@
 import './CellsPage.css';
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import AddCell from '../Add-Cell/Add-Cell';
-import Cell from '../Cell/Cell';
+import CellItem from '../Cell/Cell';
 import PageHeader from './CellsPageHeader';
 import { useTypedSelector } from '../../hooks';
 
 const CellsPage: React.FC = () => {
-	const cells = useTypedSelector(({ cells }) => cells);
+	const page = useTypedSelector(({ page }) => page);
+	const order = useTypedSelector(({ cells: { order } }) => order);
 	let showCodeButton = true;
 	let showTextButton = true;
-	const renderedCells = cells.order.map(({ id, type }) => {
+	const renderedCells = order.map(({ id, type }) => {
 		if (type === 'code') showCodeButton = false;
 		if (type === 'text') showTextButton = false;
 		return (
 			<Fragment key={id}>
-				<Cell cell={cells[type][id]} />
+				<CellItem id={id} type={type} />
 			</Fragment>
 		);
 	});
+	// < REMOVE ----
+	console.log('page render');
+	// ---- />
 	return (
 		<>
-			<PageHeader />
+			<PageHeader pageName={page.name} />
 			<div className="cell-list">
 				{renderedCells}
 				{(showCodeButton || showTextButton) && (
