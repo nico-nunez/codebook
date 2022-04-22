@@ -15,8 +15,8 @@ const reducer = produce(
 			case CellActionType.DELETE_CELL:
 				return cellsActions.deleteCell(state, action);
 
-			case CellActionType.UPDATE_CODE_CELL:
-				return cellsActions.updateCodeCell(state, action);
+			case CellActionType.UPDATE_ACTIVE_TAB:
+				return cellsActions.updateActiveTab(state, action);
 
 			case CellActionType.UPDATE_TEXT_CELL:
 				return cellsActions.updateTextCell(state, action);

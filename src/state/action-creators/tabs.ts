@@ -11,6 +11,7 @@ import {
 export const createTab = (
 	cellId: string,
 	id: string | null,
+	name: string,
 	language: EditorLanguages,
 	content?: string
 ): CreateTabAction => {
@@ -19,6 +20,7 @@ export const createTab = (
 		payload: {
 			cellId,
 			id,
+			name,
 			language,
 			content,
 		},

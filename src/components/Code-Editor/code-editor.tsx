@@ -17,7 +17,10 @@ interface Parsers {
 	[key: string]: Parser;
 }
 
-const defaultLang: EditorLanguages = 'javascript';
+export const editorLangs = ['html', 'css', 'javascript'] as const;
+export type EditorLanguages = typeof editorLangs[number];
+
+const defaultLang: EditorLanguages = 'html';
 
 const parsers: Parsers = {
 	javascript: { parser: 'babel', plugins: [parserJS, parserHTML] },
@@ -26,8 +29,6 @@ const parsers: Parsers = {
 };
 
 JSXTypes.JSXText.options.inlineClassName = require('./syntax.css');
-
-export type EditorLanguages = 'javascript' | 'html' | 'css';
 
 export interface CodeEditorProps {
 	initialValue: string;

@@ -8,6 +8,7 @@ export interface CreateTabAction {
 	payload: {
 		cellId: string;
 		id: string | null;
+		name: string;
 		language: EditorLanguages;
 		content?: string;
 	};

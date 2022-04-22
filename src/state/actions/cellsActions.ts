@@ -28,11 +28,11 @@ export interface DeleteCellAction {
 	};
 }
 
-export interface UpdateCodeCellAction {
-	type: CellActionType.UPDATE_CODE_CELL;
+export interface UpdateActiveTabAction {
+	type: CellActionType.UPDATE_ACTIVE_TAB;
 	payload: {
 		id: string;
-		activeTabId: string;
+		tabId: string | null;
 	};
 }
 
@@ -48,5 +48,5 @@ export type CellAction =
 	| CreateCellAction
 	| MoveCellAction
 	| DeleteCellAction
-	| UpdateCodeCellAction
+	| UpdateActiveTabAction
 	| UpdateTextCellAction;

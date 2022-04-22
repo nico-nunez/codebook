@@ -7,7 +7,7 @@ export interface Cell {
 
 export interface Code_Cell extends Cell {
 	type: 'code';
-	activeTab: string;
+	activeTab: string | null;
 }
 
 export type Text_Cell = Cell & { type: 'text'; content: string };

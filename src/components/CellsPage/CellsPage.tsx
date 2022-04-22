@@ -19,9 +19,6 @@ const CellsPage: React.FC = () => {
 			</Fragment>
 		);
 	});
-	// < REMOVE ----
-	console.log('page render');
-	// ---- />
 	return (
 		<>
 			<PageHeader pageName={page.name} />

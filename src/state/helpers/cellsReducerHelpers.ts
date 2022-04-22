@@ -1,12 +1,11 @@
-import { randomId } from '.';
 import {
 	CreateCellAction,
 	DeleteCellAction,
 	MoveCellAction,
-	UpdateCodeCellAction,
+	UpdateActiveTabAction,
 	UpdateTextCellAction,
 } from '../actions';
-import { Cell, CellTypes, Code_Cell, Text_Cell } from '../cell';
+import { CellTypes, Code_Cell, Text_Cell } from '../cell';
 
 type CellDetails = {
 	id: string;
@@ -67,9 +66,9 @@ const deleteCell = (state: CellsState, action: DeleteCellAction) => {
 	return state;
 };
 
-const updateCodeCell = (state: CellsState, action: UpdateCodeCellAction) => {
-	const { id, activeTabId } = action.payload;
-	state.code[id].activeTab = activeTabId;
+const updateActiveTab = (state: CellsState, action: UpdateActiveTabAction) => {
+	const { id, tabId } = action.payload;
+	state.code[id].activeTab = tabId;
 	return state;
 };
 
@@ -83,6 +82,6 @@ export const cellsActions = {
 	createCell,
 	moveCell,
 	deleteCell,
-	updateCodeCell,
+	updateActiveTab,
 	updateTextCell,
 };

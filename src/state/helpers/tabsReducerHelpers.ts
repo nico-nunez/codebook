@@ -22,10 +22,11 @@ export const initialTabsState: TabsState = {
 };
 
 const createTab = (state: TabsState, action: CreateTabAction) => {
-	const { cellId, id, content, language } = action.payload;
+	const { cellId, id, name, content, language } = action.payload;
 	const newTab: Tab = {
 		id: id || randomId(),
 		cellId,
+		name,
 		language,
 		content: content || '',
 	};

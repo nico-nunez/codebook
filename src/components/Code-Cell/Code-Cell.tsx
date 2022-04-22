@@ -1,26 +1,31 @@
 import './Code-Cell.css';
 import { useEffect } from 'react';
 import Preview from '../Preview/Preview';
-import CodeEditor, { EditorLanguages } from '../Code-Editor/code-editor';
+import CodeEditor from '../Code-Editor/code-editor';
 import Resizable from '../Resizable/Resizable';
 import { useActions } from '../../hooks/use-actions';
 import { useTypedSelector, useCumulativeCode } from '../../hooks';
-import CodeCellActionBar from './Code-Cell-Action-Bar';
 import { Code_Cell, Tab } from '../../state';
 
 interface CodeCellProps {
 	cell: Code_Cell;
 }
 
+export interface TabsData {
+	[key: string]: Tab;
+}
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 	const { createBundle, updateTab } = useActions();
-	const { tabsOrder, activeTab } = useTypedSelector(({ tabs }) => {
+	const { tabsOrder, tabsData } = useTypedSelector(({ tabs }) => {
 		const tabsOrder = tabs.order[cell.id];
-		const activeTab = tabs.data[cell.activeTab];
-		return { tabsOrder, activeTab };
+		const tabsData: TabsData = {};
+		tabsOrder.forEach((id) => (tabsData[id] = tabs.data[id]));
+		return { tabsOrder, tabsData };
 	});
 	const bundle = useTypedSelector(({ bundles }) => bundles[cell.id]);
-	const { id: tabId, language, content } = activeTab;
+	const activeTab = cell.activeTab || tabsOrder[0];
+	const { id: tabId, language, content } = tabsData[activeTab];
+
 	useEffect(() => {
 		if (!bundle) {
 			createBundle(cell.id, language, content);
@@ -37,7 +42,6 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 	};
 	return (
 		<>
-			<CodeCellActionBar id={cell.id} tabs={tabsOrder} />
 			<div className="code-cell">
 				<Resizable direction="vertical">
 					<div className="resizable-container">

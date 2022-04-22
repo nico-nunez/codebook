@@ -1,19 +1,20 @@
 import { Dispatch } from 'redux';
-import { CellActionType, PageActionType } from '../action-types';
+import { CellActionType } from '../action-types';
 import { TabActionType } from '../action-types';
 import { CreateTabAction } from '../actions';
 import {
 	CreateCellAction,
 	MoveCellAction,
 	DeleteCellAction,
-	UpdateCodeCellAction,
+	UpdateActiveTabAction,
 	UpdateTextCellAction,
 	CellDirection,
 } from '../actions/cellsActions';
 import { CellTypes } from '../cell';
 import { randomId } from '../helpers';
+import { editorLangs } from '../../components/Code-Editor/code-editor';
 
-type NewCellAction = CreateCellAction | CreateTabAction | UpdateCodeCellAction;
+type NewCellAction = CreateCellAction | CreateTabAction | UpdateActiveTabAction;
 
 export const createCell = (type: CellTypes, content?: string) => {
 	return (dispatch: Dispatch<NewCellAction>) => {
@@ -28,19 +29,22 @@ export const createCell = (type: CellTypes, content?: string) => {
 		});
 
 		if (type === 'code') {
-			const tabId = randomId();
+			for (const lang of editorLangs) {
+				const tabId = randomId();
+				dispatch({
+					type: TabActionType.CREATE_TAB,
+					payload: {
+						cellId,
+						id: tabId,
+						name: lang,
+						language: lang,
+						content: '',
+					},
+				});
+			}
 			dispatch({
-				type: TabActionType.CREATE_TAB,
-				payload: {
-					cellId,
-					id: tabId,
-					language: 'html',
-					content: '',
-				},
-			});
-			dispatch({
-				type: CellActionType.UPDATE_CODE_CELL,
-				payload: { id: cellId, activeTabId: tabId },
+				type: CellActionType.UPDATE_ACTIVE_TAB,
+				payload: { id: cellId, tabId: null },
 			});
 		}
 	};
@@ -66,15 +70,15 @@ export const deleteCell = (id: string, type: CellTypes): DeleteCellAction => {
 	};
 };
 
-export const updateCodeCell = (
+export const updateActiveTab = (
 	id: string,
-	activeTabId: string
-): UpdateCodeCellAction => {
+	tabId: string | null
+): UpdateActiveTabAction => {
 	return {
-		type: CellActionType.UPDATE_CODE_CELL,
+		type: CellActionType.UPDATE_ACTIVE_TAB,
 		payload: {
 			id,
-			activeTabId,
+			tabId,
 		},
 	};
 };

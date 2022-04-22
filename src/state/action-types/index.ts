@@ -3,7 +3,7 @@ export enum CellActionType {
 	MOVE_CELL = 'move_cell',
 	DELETE_CELL = 'delete_cell',
 	UPDATE_TEXT_CELL = 'update_text_cell',
-	UPDATE_CODE_CELL = 'update_code_cell',
+	UPDATE_ACTIVE_TAB = 'update_active_tab',
 }
 
 export enum PageActionType {

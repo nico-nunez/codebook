@@ -3,6 +3,7 @@ import { EditorLanguages } from '../components/Code-Editor/code-editor';
 export interface Tab {
 	id: string;
 	cellId: string;
+	name: string;
 	language: EditorLanguages;
 	content: string;
 }
