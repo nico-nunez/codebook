@@ -1,10 +1,28 @@
 import * as esbuild from 'esbuild-wasm';
+import { EditorLanguages } from '../components/Code-Editor/code-editor';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
 
 let service: esbuild.Service;
 
-const bundler = async (rawCode: string) => {
+type BuildOptions = {
+	[key: string]: {
+		entryPoints: string[];
+		plugins: any[];
+	};
+};
+
+const bundler = async (rawCode: string, lang: EditorLanguages) => {
+	if (lang === 'html') return { code: rawCode, error: '' };
+	const options: BuildOptions = {
+		javascript: {
+			entryPoints: ['index.js'],
+			plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+		},
+
+		css: { entryPoints: ['index.html', 'index.css'], plugins: [] },
+	};
+
 	if (!service) {
 		service = await esbuild.startService({
 			worker: true,
@@ -13,10 +31,10 @@ const bundler = async (rawCode: string) => {
 	}
 	try {
 		const result = await service.build({
-			entryPoints: ['index.js'],
+			entryPoints: options[lang].entryPoints,
 			bundle: true,
 			write: false,
-			plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+			plugins: options[lang].plugins,
 			define: {
 				'process.env.NODE_ENV': '"production"',
 				global: 'window',

@@ -15,12 +15,22 @@
   opacity: 1;
 }
 
+.action-bar-start {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .action-bar-end { 
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.action-bar-button {
-  margin: 8px 0;
+.action-bar-buttons button {
+  margin: 8px;
+}
+
+.active {
+  border: 1px solid whitesmoke;
 }

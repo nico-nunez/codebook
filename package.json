@@ -16,6 +16,7 @@
     "@types/react-resizable": "^1.7.4",
     "@uiw/react-md-editor": "3.4.1",
     "axios": "^0.26.1",
+    "buffer": "^6.0.3",
     "bulmaswatch": "^0.8.1",
     "esbuild-wasm": "0.8.27",
     "immer": "^9.0.12",
@@ -23,7 +24,9 @@
     "monaco-editor": "^0.33.0",
     "monaco-jsx-highlighter": "2.0.4",
     "prettier": "^2.6.2",
+    "process": "^0.11.10",
     "react": "^18.0.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.0.0",
     "react-redux": "^7.2.8",
     "react-resizable": "^3.0.4",
@@ -58,9 +61,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-dom": "^18.0.0",
-    "buffer": "^6.0.3",
-    "process": "^0.11.10",
-    "react-app-rewired": "^2.2.1"
+    "@types/react-dom": "^18.0.0"
   }
 }

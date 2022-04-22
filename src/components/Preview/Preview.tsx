@@ -1,12 +1,14 @@
 import './preview.css';
 import { useEffect, useRef } from 'react';
+import { EditorLanguages } from '../Code-Editor/code-editor';
 
 interface PreviewProps {
 	code: string;
 	error: string | null;
+	language: EditorLanguages;
 }
 
-export const html = `
+export const jsHTML = `
     <html>
       <head></head>
         <body>
@@ -44,20 +46,41 @@ export const html = `
     </html>
   `;
 
-const Preview: React.FC<PreviewProps> = ({ code, error }) => {
+const errorHTML = (err: string) => {
+	return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+  <h2>${err}</h2>
+  </body>
+</html>`;
+};
+
+const Preview: React.FC<PreviewProps> = ({ code, error, language }) => {
 	const iframeRef = useRef<any>();
+	let srcHTML = jsHTML;
 	useEffect(() => {
-		iframeRef.current.srcdoc = html;
-		setTimeout(() => {
-			iframeRef.current.contentWindow.postMessage({ code, error }, '*');
-		}, 50);
-	}, [code, error]);
+		if (language === 'html') {
+			srcHTML = error ? errorHTML(error) : code;
+		}
+		if (language === 'javascript') {
+			setTimeout(() => {
+				iframeRef.current.contentWindow.postMessage({ code, error }, '*');
+			}, 50);
+		}
+		iframeRef.current.srcdoc = srcHTML;
+	}, [code, error, language]);
 
 	return (
 		<div className="preview-wrapper">
 			<iframe
 				ref={iframeRef}
-				srcDoc={html}
+				srcDoc={srcHTML}
 				sandbox="allow-scripts"
 				title="display-results"
 			></iframe>

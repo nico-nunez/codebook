@@ -2,27 +2,34 @@ import './Add-Cell.css';
 import { useActions } from '../../hooks';
 
 interface AddCellProps {
-	nextCellId: string | null;
+	showCodeButton: boolean;
+	showTextButton: boolean;
 }
 
-const AddCell: React.FC<AddCellProps> = ({ nextCellId }) => {
-	const { insertCellBefore } = useActions();
-
+const AddCell: React.FC<AddCellProps> = ({
+	showCodeButton,
+	showTextButton,
+}) => {
+	const { createCell } = useActions();
 	return (
 		<div className="add-cell-wrapper">
 			<div className="add-cell-divider"></div>
-			<button
-				className="button is-rounded"
-				onClick={() => insertCellBefore(nextCellId, 'code')}
-			>
-				+ Code
-			</button>
-			<button
-				className="button is-rounded"
-				onClick={() => insertCellBefore(nextCellId, 'text')}
-			>
-				+ Text
-			</button>
+			{showCodeButton && (
+				<button
+					className="button is-rounded"
+					onClick={() => createCell('code')}
+				>
+					+ Code
+				</button>
+			)}
+			{showTextButton && (
+				<button
+					className="button is-rounded"
+					onClick={() => createCell('text')}
+				>
+					+ Text
+				</button>
+			)}
 		</div>
 	);
 };

@@ -1,22 +1,19 @@
 import './Cell.css';
-import TextEditor from '../Text-Editor/Text-editor';
+import TextCell from '../Text-Cell/Text-Cell';
 import CodeCell from '../Code-Cell/Code-Cell';
-import { Cell } from '../../state';
-
-import CellHeader from './Cell-Header';
+import { Code_Cell, Text_Cell } from '../../state';
 
 interface CellListItemProps {
-	cell: Cell;
+	cell: Code_Cell | Text_Cell;
 }
 
 const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
 	return (
 		<div className="cell-list-item">
-			<CellHeader id={cell.id} />
 			{cell.type === 'code' ? (
 				<CodeCell cell={cell} />
 			) : (
-				<TextEditor cell={cell} />
+				<TextCell cell={cell} />
 			)}
 		</div>
 	);
