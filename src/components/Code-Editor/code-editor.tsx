@@ -22,6 +22,7 @@ export type EditorLanguages = typeof editorLangs[number];
 
 const defaultLang: EditorLanguages = 'html';
 
+// Prettier formatting options
 const parsers: Parsers = {
 	javascript: { parser: 'babel', plugins: [parserJS, parserHTML] },
 	html: { parser: 'html', plugins: [parserHTML] },
@@ -48,7 +49,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 	};
 
 	const onEditorInputChange: OnChange = (value, evt) => {
-		if (value) onInputChange(value);
+		onInputChange(value || '');
 	};
 
 	const onFormatClick = () => {

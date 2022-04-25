@@ -16,16 +16,16 @@ export interface TabsData {
 }
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 	const { createBundle, updateTab } = useActions();
-	const { tabsOrder, tabsData } = useTypedSelector(({ tabs }) => {
-		const tabsOrder = tabs.order[cell.id];
-		const tabsData: TabsData = {};
-		tabsOrder.forEach((id) => (tabsData[id] = tabs.data[id]));
-		return { tabsOrder, tabsData };
+	const tabsData = useTypedSelector(({ tabs }) => {
+		const tabsData = tabs.order[cell.id].map((id) => tabs.data[id]);
+		return tabsData;
 	});
 	const bundle = useTypedSelector(({ bundles }) => bundles[cell.id]);
-	const activeTab = cell.activeTab || tabsOrder[0];
-	const { id: tabId, language, content } = tabsData[activeTab];
-
+	const {
+		id: tabId,
+		language,
+		content,
+	} = tabsData.find((tab) => tab.id === cell.activeTab) || tabsData[0];
 	useEffect(() => {
 		if (!bundle) {
 			createBundle(cell.id, language, content);
@@ -62,8 +62,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 							) : (
 								<Preview
 									code={bundle.code}
-									error={bundle.error}
-									language={language}
+									error={bundle.error || bundle.warning}
 								/>
 							)}
 						</div>

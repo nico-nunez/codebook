@@ -8,6 +8,10 @@ export const unpkgPathPlugin = () => {
 			build.onResolve({ filter: /(^index\.js$)/ }, () => {
 				return { namespace: 'index', path: 'index.js' };
 			});
+			// Handle root entry file of 'index.css'
+			build.onResolve({ filter: /(^index\.css$)/ }, () => {
+				return { namespace: 'index', path: 'index.css' };
+			});
 
 			// Handle relative path in a module
 			build.onResolve({ filter: /^\.+\// }, (args: any) => {

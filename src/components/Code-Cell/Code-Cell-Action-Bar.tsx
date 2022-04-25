@@ -23,6 +23,7 @@ const CodeCellActionBar: React.FC<ActionBarProps> = ({ cell }) => {
 				tabId={id}
 				tabName={tabNames[i]}
 				isActive={activeTab === id}
+				key={id}
 			/>
 		);
 	});

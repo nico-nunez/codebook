@@ -24,6 +24,7 @@ export const createBundle = (
 			type: BundleActionType.BUNDLE_COMPLETE,
 			payload: {
 				cellId,
+				language,
 				bundle: result,
 			},
 		});

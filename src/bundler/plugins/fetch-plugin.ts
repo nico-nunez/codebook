@@ -17,6 +17,13 @@ export const fetchPlugin = (inputCode: string) => {
 				};
 			});
 
+			build.onLoad({ filter: /(^index\.css$)/ }, () => {
+				return {
+					loader: 'css',
+					contents: inputCode,
+				};
+			});
+
 			build.onLoad({ filter: /.*/ }, async (args: any) => {
 				const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(
 					args.path
@@ -28,10 +35,10 @@ export const fetchPlugin = (inputCode: string) => {
 			build.onLoad({ filter: /.css$/ }, async (args: any) => {
 				const { data, request } = await axios.get(args.path);
 				const contents = `
-          const styles = document.createElement('style');
-          styles.innerText = \`${data}\`;
-          document.head.appendChild(styles);
-        `;
+			    const styles = document.createElement('style');
+			    styles.innerText = \`${data}\`;
+			    document.head.appendChild(styles);
+			  `;
 
 				const result: esbuild.OnLoadResult = {
 					loader: 'jsx',
