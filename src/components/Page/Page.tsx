@@ -1,11 +1,11 @@
-import './CellsPage.css';
+import './Page.css';
 import { Fragment } from 'react';
 import AddCell from '../Add-Cell/Add-Cell';
 import CellItem from '../Cell/Cell';
-import PageHeader from './CellsPageHeader';
+import PageHeader from './PageHeader';
 import { useTypedSelector } from '../../hooks';
 
-const CellsPage: React.FC = () => {
+const Page: React.FC = () => {
 	const page = useTypedSelector(({ page }) => page);
 	const order = useTypedSelector(({ cells: { order } }) => order);
 	let showCodeButton = true;
@@ -35,4 +35,4 @@ const CellsPage: React.FC = () => {
 	);
 };
 
-export default CellsPage;
+export default Page;
