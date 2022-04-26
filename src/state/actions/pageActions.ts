@@ -1,5 +1,9 @@
 import { PageActionType } from '../action-types';
-import { CellTypes } from '../cell';
+
+export interface NewPageAction {
+	type: PageActionType.NEW_PAGE;
+	payload: {};
+}
 
 export interface UpdatePageNameAction {
 	type: PageActionType.UPDATE_PAGE_NAME;
@@ -22,6 +26,7 @@ export interface RemovePageImport {
 }
 
 export type PageAction =
+	| NewPageAction
 	| UpdatePageNameAction
 	| AddPageImport
 	| RemovePageImport;

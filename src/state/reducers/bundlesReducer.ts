@@ -41,6 +41,11 @@ const reducer = produce(
 				state[cellId].code[language] = bundle.code;
 				return state;
 			}
+
+			case BundleActionType.RESET_BUNDLES: {
+				state = initialState;
+				return state;
+			}
 			default:
 				return state;
 		}

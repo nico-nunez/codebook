@@ -17,6 +17,11 @@ const reducer = produce(
 
 			case TabActionType.UPDATE_TAB:
 				return tabsAction.updateTab(state, action);
+
+			case TabActionType.RESET_TABS:
+				state = initialTabsState;
+				return state;
+
 			default:
 				return state;
 		}

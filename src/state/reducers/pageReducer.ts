@@ -19,6 +19,10 @@ const initialState: PageState = {
 const reducer = produce(
 	(state: PageState = initialState, action: PageAction): PageState => {
 		switch (action.type) {
+			case PageActionType.NEW_PAGE: {
+				state = initialState;
+				return state;
+			}
 			case PageActionType.UPDATE_PAGE_NAME:
 				state.name = action.payload.name;
 				return state;

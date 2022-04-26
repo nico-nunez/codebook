@@ -8,6 +8,7 @@ import {
 	DeleteCellAction,
 	UpdateActiveTabAction,
 	UpdateTextCellAction,
+	ResetCellsAction,
 	CellDirection,
 } from '../actions/cellsActions';
 import { CellTypes } from '../cell';
@@ -93,5 +94,12 @@ export const updateTextCell = (
 			id,
 			content,
 		},
+	};
+};
+
+export const resetCells = (): ResetCellsAction => {
+	return {
+		type: CellActionType.RESET_CELLS,
+		payload: {},
 	};
 };

@@ -22,4 +22,12 @@ export interface BundleCompleteAction {
 	};
 }
 
-export type BundleAction = BundleStartAction | BundleCompleteAction;
+export interface ResetBundlesAction {
+	type: BundleActionType.RESET_BUNDLES;
+	payload: {};
+}
+
+export type BundleAction =
+	| BundleStartAction
+	| BundleCompleteAction
+	| ResetBundlesAction;

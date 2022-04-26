@@ -1,56 +1,68 @@
 import './PageHeader.css';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 import PageName from './PageName';
+import { useToggle } from '../../hooks';
+import Modal from '../Modal';
+import { useActions } from '../../hooks';
 
 interface PageHeaderProps {
 	pageName: string;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ pageName }) => {
+	const [showModal, toggleModal] = useToggle(false);
+	const { newPage } = useActions();
 	const onImportPage = () => {
 		// TODO
-		console.log('import page');
+		toggleModal();
 	};
 
 	const onNewPage = () => {
-		//TODO
-
-		console.log('new page');
+		newPage();
 	};
 
 	const onExportPage = () => {
 		//TODO
-		console.log('export page');
+		toggleModal();
 	};
 
 	const onSavePage = () => {
 		//TODO
-		console.log('save page');
+		toggleModal();
 	};
 	return (
-		<ActionBarWrapper>
-			<div>
-				<div className="action-bar-buttons">
-					<button className="button is-small is-rounded" onClick={onImportPage}>
-						Import
-					</button>
-					<button className="button is-small is-rounded" onClick={onExportPage}>
-						Export
-					</button>
+		<>
+			<ActionBarWrapper>
+				<div>
+					<div className="action-bar-buttons">
+						<button
+							className="button is-small is-rounded"
+							onClick={onImportPage}
+						>
+							Import
+						</button>
+						<button
+							className="button is-small is-rounded"
+							onClick={onExportPage}
+						>
+							Export
+						</button>
+					</div>
 				</div>
-			</div>
-			<PageName name={pageName} />
-			<div>
-				<div className="action-bar-buttons">
-					<button className="button is-small is-rounded" onClick={onSavePage}>
-						Save
-					</button>
-					<button className="button is-small is-rounded" onClick={onNewPage}>
-						New
-					</button>
+				<PageName name={pageName} />
+				<div>
+					<div className="action-bar-buttons">
+						<button className="button is-small is-rounded" onClick={onSavePage}>
+							Save
+						</button>
+						<button className="button is-small is-rounded" onClick={onNewPage}>
+							New
+						</button>
+					</div>
 				</div>
-			</div>
-		</ActionBarWrapper>
+			</ActionBarWrapper>
+			<Modal active={showModal} onClick={toggleModal} />
+		</>
 	);
 };
 

@@ -1,10 +1,5 @@
 import { Dispatch } from 'redux';
-import {
-	NewPageAction,
-	UpdatePageNameAction,
-	AddPageImport,
-	RemovePageImport,
-} from '../actions/pageActions';
+
 import {
 	BundleActionType,
 	CellActionType,
@@ -12,6 +7,7 @@ import {
 	TabActionType,
 } from '../action-types';
 import {
+	NewPageAction,
 	ResetBundlesAction,
 	ResetCellsAction,
 	ResetTabsAction,
@@ -23,8 +19,9 @@ type GenerateNewPageAction =
 	| ResetTabsAction
 	| ResetBundlesAction;
 
-export const newPage = () => {
+export const generateNewPage = () => {
 	return (dispatch: Dispatch<GenerateNewPageAction>) => {
+		console.log('ran');
 		dispatch({
 			type: PageActionType.NEW_PAGE,
 			payload: {},
@@ -41,32 +38,5 @@ export const newPage = () => {
 			type: BundleActionType.RESET_BUNDLES,
 			payload: {},
 		});
-	};
-};
-
-export const updatePageName = (name: string): UpdatePageNameAction => {
-	return {
-		type: PageActionType.UPDATE_PAGE_NAME,
-		payload: {
-			name,
-		},
-	};
-};
-
-export const addPageImport = (id: string): AddPageImport => {
-	return {
-		type: PageActionType.ADD_PAGE_IMPORT,
-		payload: {
-			id,
-		},
-	};
-};
-
-export const removePageImport = (id: string): RemovePageImport => {
-	return {
-		type: PageActionType.REMOVE_PAGE_IMPORT,
-		payload: {
-			id,
-		},
 	};
 };

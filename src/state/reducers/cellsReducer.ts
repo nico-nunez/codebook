@@ -20,6 +20,11 @@ const reducer = produce(
 
 			case CellActionType.UPDATE_TEXT_CELL:
 				return cellsActions.updateTextCell(state, action);
+
+			case CellActionType.RESET_CELLS:
+				state = initialCellsState;
+				return state;
+
 			default:
 				return state;
 		}

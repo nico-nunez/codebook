@@ -44,9 +44,15 @@ export interface UpdateTextCellAction {
 	};
 }
 
+export interface ResetCellsAction {
+	type: CellActionType.RESET_CELLS;
+	payload: {};
+}
+
 export type CellAction =
 	| CreateCellAction
 	| MoveCellAction
 	| DeleteCellAction
 	| UpdateActiveTabAction
-	| UpdateTextCellAction;
+	| UpdateTextCellAction
+	| ResetCellsAction;

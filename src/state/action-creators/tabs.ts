@@ -5,6 +5,7 @@ import {
 	MoveTabAction,
 	DeleteTabAction,
 	UpdateTabAction,
+	ResetTabsAction,
 	TabDirection,
 } from '../actions/tabsActions';
 
@@ -58,5 +59,12 @@ export const updateTab = (
 			language,
 			content,
 		},
+	};
+};
+
+export const resetTabs = (): ResetTabsAction => {
+	return {
+		type: TabActionType.RESET_TABS,
+		payload: {},
 	};
 };

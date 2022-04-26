@@ -2,6 +2,7 @@ import {
 	CreateCellAction,
 	DeleteCellAction,
 	MoveCellAction,
+	ResetCellsAction,
 	UpdateActiveTabAction,
 	UpdateTextCellAction,
 } from '../actions';
@@ -78,10 +79,16 @@ const updateTextCell = (state: CellsState, action: UpdateTextCellAction) => {
 	return state;
 };
 
+const resetCells = (state: CellsState, action: ResetCellsAction) => {
+	state = initialCellsState;
+	return state;
+};
+
 export const cellsActions = {
 	createCell,
 	moveCell,
 	deleteCell,
 	updateActiveTab,
 	updateTextCell,
+	resetCells,
 };

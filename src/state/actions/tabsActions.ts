@@ -38,8 +38,14 @@ export interface UpdateTabAction {
 	};
 }
 
+export interface ResetTabsAction {
+	type: TabActionType.RESET_TABS;
+	payload: {};
+}
+
 export type TabAction =
 	| CreateTabAction
 	| MoveTabAction
 	| DeleteTabAction
-	| UpdateTabAction;
+	| UpdateTabAction
+	| ResetTabsAction;

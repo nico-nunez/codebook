@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { BundleActionType } from '../action-types';
-import { BundleAction } from '../actions';
+import { BundleAction, ResetBundlesAction } from '../actions';
 import bundle from '../../bundler';
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 
@@ -28,5 +28,12 @@ export const createBundle = (
 				bundle: result,
 			},
 		});
+	};
+};
+
+export const resetBundles = (): ResetBundlesAction => {
+	return {
+		type: BundleActionType.RESET_BUNDLES,
+		payload: {},
 	};
 };
