@@ -1,19 +1,19 @@
+import React, { ReactElement } from 'react';
+
 export interface NavbarDropdownProps {
 	title: string;
-	items: string[];
 }
 
-const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ title, items }) => {
+const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ title, children }) => {
+	const dropdownItems = React.Children.map(children, (child) => {
+		return React.cloneElement(child as ReactElement, {
+			className: 'navbar-item',
+		});
+	});
 	return (
 		<div className="navbar-item has-dropdown is-hoverable">
 			<span className="navbar-link">{title}</span>
-			<div className="navbar-dropdown">
-				{items.map((item, i) => (
-					<span className="navbar-item" key={i}>
-						{item}
-					</span>
-				))}
-			</div>
+			<div className="navbar-dropdown">{dropdownItems}</div>
 		</div>
 	);
 };

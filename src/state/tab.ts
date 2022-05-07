@@ -34,3 +34,13 @@ export const initialContent = {
 
 	css: '',
 };
+
+type tabType = {
+	id: number;
+	cell_id: number;
+	code_language: EditorLanguages;
+	content: string | null;
+	order_index: number;
+	created_at: Date;
+	updated_at: Date;
+};

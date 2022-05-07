@@ -3,3 +3,4 @@ export { useActions } from './use-actions';
 export { useCumulativeCode } from './use-cumulative-code';
 export { useToggle } from './use-toggle';
 export { useSrcDoc } from './useSrcDoc';
+export * from './useRequests';

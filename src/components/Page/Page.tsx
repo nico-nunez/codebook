@@ -1,4 +1,5 @@
 import './Page.css';
+import { Outlet } from 'react-router-dom';
 import { Fragment } from 'react';
 import AddCell from '../Add-Cell/Add-Cell';
 import CellItem from '../Cell/Cell';
@@ -21,7 +22,7 @@ const Page: React.FC = () => {
 	});
 	return (
 		<>
-			<PageHeader pageName={page.name} />
+			<PageHeader pageName={page.page_name} />
 			<div className="cell-list">
 				{renderedCells}
 				{(showCodeButton || showTextButton) && (
@@ -31,6 +32,7 @@ const Page: React.FC = () => {
 					/>
 				)}
 			</div>
+			<Outlet />
 		</>
 	);
 };

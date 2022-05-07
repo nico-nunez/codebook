@@ -31,6 +31,11 @@
   margin: 8px;
 }
 
+.action-bar-buttons button:disabled {
+  border-color: aliceblue;
+  background-color: #37414b;
+}
+
 .active {
   border: 1px solid rgba(245, 245, 245, 0.4);
 }

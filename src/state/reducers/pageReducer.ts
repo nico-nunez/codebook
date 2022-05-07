@@ -5,15 +5,15 @@ import { PageActionType } from '../action-types';
 export interface PageState {
 	loading: boolean;
 	error: string | null;
-	name: string;
-	imports: string[];
+	page_name: string;
+	saved_changes: boolean;
 }
 
 const initialState: PageState = {
 	loading: false,
 	error: null,
-	name: 'New Page',
-	imports: [],
+	page_name: 'New Page',
+	saved_changes: true,
 };
 
 const reducer = produce(
@@ -24,18 +24,23 @@ const reducer = produce(
 				return state;
 			}
 			case PageActionType.UPDATE_PAGE_NAME:
-				state.name = action.payload.name;
+				state.page_name = action.payload.page_name;
 				return state;
 
-			case PageActionType.ADD_PAGE_IMPORT:
-				state.imports.push(action.payload.id);
+			case PageActionType.UPDATE_SAVED_CHANGES:
+				state.saved_changes = action.payload.saved_changes;
 				return state;
 
-			case PageActionType.REMOVE_PAGE_IMPORT:
-				state.imports = state.imports.filter(
-					(pageId) => pageId !== action.payload.id
-				);
-				return state;
+			// --- TODO ---
+			// case PageActionType.ADD_PAGE_IMPORT:
+			// 	state.imports.push(action.payload.id);
+			// 	return state;
+
+			// case PageActionType.REMOVE_PAGE_IMPORT:
+			// 	state.imports = state.imports.filter(
+			// 		(pageId) => pageId !== action.payload.id
+			// 	);
+			// 	return state;
 
 			default:
 				return state;

@@ -8,25 +8,32 @@ export interface NewPageAction {
 export interface UpdatePageNameAction {
 	type: PageActionType.UPDATE_PAGE_NAME;
 	payload: {
-		name: string;
+		page_name: string;
 	};
 }
 
-export interface AddPageImport {
-	type: PageActionType.ADD_PAGE_IMPORT;
-	payload: {
-		id: string;
-	};
+export interface UpdateSavedChangesAction {
+	type: PageActionType.UPDATE_SAVED_CHANGES;
+	payload: { saved_changes: boolean };
 }
-export interface RemovePageImport {
-	type: PageActionType.REMOVE_PAGE_IMPORT;
-	payload: {
-		id: string;
-	};
-}
+
+// --- TODO ---
+// export interface AddPageImport {
+// 	type: PageActionType.ADD_PAGE_IMPORT;
+// 	payload: {
+// 		id: string;
+// 	};
+// }
+// export interface RemovePageImport {
+// 	type: PageActionType.REMOVE_PAGE_IMPORT;
+// 	payload: {
+// 		id: string;
+// 	};
+// }
 
 export type PageAction =
 	| NewPageAction
 	| UpdatePageNameAction
-	| AddPageImport
-	| RemovePageImport;
+	| UpdateSavedChangesAction;
+// | AddPageImport
+// | RemovePageImport;

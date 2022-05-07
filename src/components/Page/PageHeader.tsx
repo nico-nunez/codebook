@@ -1,8 +1,8 @@
 import './PageHeader.css';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 import PageName from './PageName';
-import { useToggle } from '../../hooks';
-import Modal from '../Modal';
+import { useToggle, useTypedSelector } from '../../hooks';
+import AlertModal from '../AlertModal';
 import { useActions } from '../../hooks';
 
 interface PageHeaderProps {
@@ -10,30 +10,30 @@ interface PageHeaderProps {
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ pageName }) => {
-	const [showModal, toggleModal] = useToggle(false);
-	const { newPage } = useActions();
+	const { newPage, displayModal } = useActions();
+	const { updateSavedChanges } = useActions();
+	const savedChanges = useTypedSelector(({ page }) => page.saved_changes);
 	const onImportPage = () => {
 		// TODO
-		toggleModal();
-	};
-
-	const onNewPage = () => {
-		newPage();
+		displayModal('alert');
 	};
 
 	const onExportPage = () => {
 		//TODO
-		toggleModal();
+		displayModal('alert');
 	};
 
 	const onSavePage = () => {
 		//TODO
-		toggleModal();
+		updateSavedChanges(true);
+	};
+	const onNewPage = () => {
+		newPage();
 	};
 	return (
 		<>
 			<ActionBarWrapper>
-				<div>
+				<div className="ms-2">
 					<div className="action-bar-buttons">
 						<button
 							className="button is-small is-rounded"
@@ -50,9 +50,13 @@ const PageHeader: React.FC<PageHeaderProps> = ({ pageName }) => {
 					</div>
 				</div>
 				<PageName name={pageName} />
-				<div>
+				<div className="me-2">
 					<div className="action-bar-buttons">
-						<button className="button is-small is-rounded" onClick={onSavePage}>
+						<button
+							className="button is-small is-rounded"
+							onClick={onSavePage}
+							disabled={savedChanges}
+						>
 							Save
 						</button>
 						<button className="button is-small is-rounded" onClick={onNewPage}>
@@ -61,7 +65,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ pageName }) => {
 					</div>
 				</div>
 			</ActionBarWrapper>
-			<Modal active={showModal} onClick={toggleModal} />
+			<AlertModal />
 		</>
 	);
 };

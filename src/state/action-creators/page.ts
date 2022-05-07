@@ -2,8 +2,9 @@ import { Dispatch } from 'redux';
 import {
 	NewPageAction,
 	UpdatePageNameAction,
-	AddPageImport,
-	RemovePageImport,
+	UpdateSavedChangesAction,
+	// AddPageImport,
+	// RemovePageImport,
 } from '../actions/pageActions';
 import {
 	BundleActionType,
@@ -44,29 +45,39 @@ export const newPage = () => {
 	};
 };
 
-export const updatePageName = (name: string): UpdatePageNameAction => {
+export const updatePageName = (page_name: string): UpdatePageNameAction => {
 	return {
 		type: PageActionType.UPDATE_PAGE_NAME,
 		payload: {
-			name,
+			page_name,
 		},
 	};
 };
 
-export const addPageImport = (id: string): AddPageImport => {
+export const updateSavedChanges = (
+	saved_changes: boolean
+): UpdateSavedChangesAction => {
 	return {
-		type: PageActionType.ADD_PAGE_IMPORT,
-		payload: {
-			id,
-		},
+		type: PageActionType.UPDATE_SAVED_CHANGES,
+		payload: { saved_changes },
 	};
 };
 
-export const removePageImport = (id: string): RemovePageImport => {
-	return {
-		type: PageActionType.REMOVE_PAGE_IMPORT,
-		payload: {
-			id,
-		},
-	};
-};
+// TODO
+// export const addPageImport = (id: string): AddPageImport => {
+// 	return {
+// 		type: PageActionType.ADD_PAGE_IMPORT,
+// 		payload: {
+// 			id,
+// 		},
+// 	};
+// };
+
+// export const removePageImport = (id: string): RemovePageImport => {
+// 	return {
+// 		type: PageActionType.REMOVE_PAGE_IMPORT,
+// 		payload: {
+// 			id,
+// 		},
+// 	};
+// };

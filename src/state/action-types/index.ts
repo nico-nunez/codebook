@@ -10,8 +10,10 @@ export enum CellActionType {
 export enum PageActionType {
 	NEW_PAGE = 'new_page',
 	UPDATE_PAGE_NAME = 'update_page_name',
-	REMOVE_PAGE_IMPORT = 'remove_page_import',
-	ADD_PAGE_IMPORT = 'add_page_import',
+	UPDATE_SAVED_CHANGES = 'update_saved_changes',
+	// --- TODO ---
+	// REMOVE_PAGE_IMPORT = 'remove_page_import',
+	// ADD_PAGE_IMPORT = 'add_page_import',
 }
 
 export enum TabActionType {
@@ -26,4 +28,19 @@ export enum BundleActionType {
 	BUNDLE_START = 'bundle_start',
 	BUNDLE_COMPLETE = 'bundle_complete',
 	RESET_BUNDLES = 'reset_bundles',
+}
+
+export enum AuthActionType {
+	REGISTER_USER = 'register_user',
+	LOCAL_LOGIN = 'local_login',
+	LOGOUT_USER = 'logout_user',
+	LOGOUT_SUCCESS = 'logout_success',
+	AUTHENTICATE_SESSION = 'authenticate_session',
+	AUTH_SUCCESS = 'register_success',
+	AUTH_FAILURE = 'auth_failure',
+}
+
+export enum ModalActionType {
+	DISPLAY_MODAL = 'display_modal',
+	HIDE_MODAL = 'hide_modal',
 }

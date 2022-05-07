@@ -6,3 +6,4 @@ export * from './reducers';
 export * from './cell';
 export * from './store';
 export * from './tab';
+export * from './page';
