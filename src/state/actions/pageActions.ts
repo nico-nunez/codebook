@@ -1,5 +1,5 @@
 import { PageActionType } from '../action-types';
-import { FullPage } from '../page';
+import { FullPage } from '../models';
 
 export interface CreatePageAction {
 	type: PageActionType.CREATE_PAGE;

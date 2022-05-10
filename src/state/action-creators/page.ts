@@ -1,6 +1,6 @@
 import { store } from '../store';
 import { Dispatch } from 'redux';
-import { FullPage } from '../page';
+import { FullPage } from '../models';
 import axios, { AxiosResponse } from 'axios';
 import { ResetBundlesAction } from '../actions/bundleActions';
 import { LoadCellAction, ResetCellsAction } from '../actions/cellsActions';

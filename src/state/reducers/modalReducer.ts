@@ -1,6 +1,6 @@
 import produce from 'immer';
-import { ModalActionType } from '../action-types';
 import { ModalAction } from '../actions';
+import { ModalActionType } from '../action-types';
 
 export interface ModalState {
 	display: boolean;

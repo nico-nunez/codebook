@@ -1,5 +1,5 @@
 import { AuthActionType } from '../action-types';
-import { User } from '../user';
+import { User } from '../models';
 
 export interface RegisterUserAction {
 	type: AuthActionType.REGISTER_USER;

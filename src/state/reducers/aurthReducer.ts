@@ -1,7 +1,7 @@
 import produce from 'immer';
-import { User } from '../user';
-import { AuthActionType } from '../action-types';
+import { User } from '../models/user';
 import { AuthAction } from '../actions';
+import { AuthActionType } from '../action-types';
 
 interface AuthState {
 	isAuthenticated: boolean;

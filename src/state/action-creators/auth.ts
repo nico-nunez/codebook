@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AuthActionType, ModalActionType } from '../action-types';
 import { AuthAction } from '../actions/authActions';
 import { ModalAction } from '../actions/modalActions';
-import { User } from '../user';
+import { User } from '../models';
 
 interface Registration {
 	profile_name: string;

@@ -1,5 +1,5 @@
 import { CellActionType } from '../action-types';
-import { CellTypes, SavedCell } from '../cell';
+import { CellTypes, SavedCell } from '../models';
 
 export type CellDirection = 'up' | 'down';
 

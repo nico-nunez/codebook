@@ -3,7 +3,5 @@ export * from './action-types';
 export * from './actions';
 export * from './helpers';
 export * from './reducers';
-export * from './cell';
+export * from './models';
 export * from './store';
-export * from './tab';
-export * from './page';

@@ -1,6 +1,6 @@
 import produce from 'immer';
-import { TabActionType } from '../action-types';
 import { TabAction } from '../actions';
+import { TabActionType } from '../action-types';
 import { tabsAction, TabsState, initialTabsState } from '../helpers';
 
 const reducer = produce(

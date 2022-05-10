@@ -1,6 +1,6 @@
 import { store } from '../store';
 import { Dispatch } from 'redux';
-import { CellTypes, SavedCell } from '../cell';
+import { CellTypes, SavedCell } from '../models';
 import { randomId } from '../helpers';
 import { CellActionType, TabActionType } from '../action-types';
 import { editorLangs } from '../../components/Code-Editor/code-editor';

@@ -1,6 +1,6 @@
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 import { TabActionType } from '../action-types';
-import { SavedTab } from '../tab';
+import { SavedTab } from '../models';
 
 export type TabDirection = 'left' | 'right';
 

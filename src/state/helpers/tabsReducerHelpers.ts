@@ -1,3 +1,5 @@
+import { SavedTab, Tab } from '../models';
+import { randomId } from '../helpers';
 import {
 	CreateTabAction,
 	LoadTabAction,
@@ -6,8 +8,6 @@ import {
 	UpdateActiveTabAction,
 	DeleteTabAction,
 } from '../actions';
-import { randomId } from '../helpers';
-import { SavedTab, Tab } from '../tab';
 
 export interface TabsState {
 	order: number[];

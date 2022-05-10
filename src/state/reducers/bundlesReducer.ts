@@ -1,7 +1,7 @@
 import produce from 'immer';
-import { EditorLanguages } from '../../components/Code-Editor/code-editor';
-import { BundleActionType } from '../action-types';
 import { BundleAction } from '../actions';
+import { BundleActionType } from '../action-types';
+import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 
 export type CodeBundle = {
 	loading: boolean;

@@ -1,4 +1,4 @@
-import { EditorLanguages } from '../components/Code-Editor/code-editor';
+import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 
 export interface Tab {
 	id: number;

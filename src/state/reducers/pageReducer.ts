@@ -1,7 +1,7 @@
 import produce from 'immer';
+import { randomId } from '../helpers';
 import { PageAction } from '../actions';
 import { PageActionType } from '../action-types';
-import { randomId } from '../helpers';
 
 export interface PageState {
 	id: number | null;

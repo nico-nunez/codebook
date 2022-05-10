@@ -1,5 +1,6 @@
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 import { TabActionType } from '../action-types';
+import { SavedTab } from '../models';
 import {
 	CreateTabAction,
 	LoadTabAction,
@@ -10,7 +11,6 @@ import {
 	ResetTabsAction,
 	TabDirection,
 } from '../actions/tabsActions';
-import { SavedTab } from '../tab';
 
 export const createTab = (
 	cell_id: number,

@@ -1,3 +1,4 @@
+import { Cell, SavedCell } from '../models';
 import {
 	CreateCellAction,
 	LoadCellAction,
@@ -5,7 +6,6 @@ import {
 	DeleteCellAction,
 	MoveCellAction,
 } from '../actions';
-import { Cell, SavedCell } from '../cell';
 
 export interface CellsState {
 	order: number[];
