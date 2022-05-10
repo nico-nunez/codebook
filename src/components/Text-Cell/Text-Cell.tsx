@@ -1,18 +1,18 @@
 import './Text-Cell.css';
 import { useEffect, useRef, useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
-import { useActions } from '../../hooks/use-actions';
-import { Text_Cell } from '../../state';
+import { useActions } from '../../hooks/useActions';
+import { Cell, SavedCell } from '../../state';
 import TextCellActionBar from './Text-Cell-Action-Bar';
 
 interface TextCellProps {
-	cell: Text_Cell;
+	cell: Cell | SavedCell;
 }
 
 const TextCell: React.FC<TextCellProps> = ({ cell: { content, id } }) => {
 	const editorRef = useRef<HTMLDivElement | null>(null);
 	const [editing, setEditing] = useState(false);
-	const { updateTextCell } = useActions();
+	const { updateCell } = useActions();
 
 	useEffect(() => {
 		const handleClick = (evt: MouseEvent) => {
@@ -35,8 +35,8 @@ const TextCell: React.FC<TextCellProps> = ({ cell: { content, id } }) => {
 		return (
 			<div ref={editorRef} className="text-editor">
 				<MDEditor
-					value={content}
-					onChange={(v = '') => updateTextCell(id, v)}
+					value={content || ''}
+					onChange={(v = '') => updateCell(id, v)}
 				/>
 			</div>
 		);

@@ -2,7 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useActions, useTypedSelector } from '../../hooks';
 
-type HeaderProps = { title: string };
+// type HeaderProps = { title: string };
 
 // export const ModalHeader: React.FC<HeaderProps> = ({ title }) => {
 // 	return (
@@ -23,7 +23,7 @@ export const ModalFooter: React.FC = ({ children }) => {
 
 interface ModalProps {
 	name: string;
-	title: string;
+	title: string | null;
 	content?: string;
 	confirmBtn?: boolean;
 	onConfirm?: () => void;
@@ -73,19 +73,21 @@ const Modal: React.FC<ModalProps> = ({
 			<div className={`modal ${isActive && 'is-active'}`}>
 				<div className="modal-background" onClick={onClick}></div>
 				<div className="modal-card">
-					<header className="modal-card-head">
-						<p
-							className="modal-card-title "
-							style={{ width: '90%', textAlign: 'center' }}
-						>
-							{title}
-						</p>
-						<button
-							className="delete"
-							aria-label="close"
-							onClick={onClick}
-						></button>
-					</header>
+					{title && (
+						<header className="modal-card-head">
+							<p
+								className="modal-card-title "
+								style={{ width: '90%', textAlign: 'center' }}
+							>
+								{title}
+							</p>
+							<button
+								className="delete"
+								aria-label="close"
+								onClick={onClick}
+							></button>
+						</header>
+					)}
 					{content && <section className="modal-card-body">{content}</section>}
 					{children}
 					{renderFooter()}

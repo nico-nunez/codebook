@@ -1,4 +1,4 @@
-import { Code_Cell } from '../../state';
+import { Cell, SavedCell } from '../../state';
 import { shallowEqual } from 'react-redux';
 import { useTypedSelector } from '../../hooks';
 import ActionBarTab from '../Action-Bar/Action-Bar-Tab';
@@ -6,22 +6,23 @@ import ActionBarControls from '../Action-Bar/Action-Bar-Controls';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 
 interface ActionBarProps {
-	cell: Code_Cell;
+	cell: Cell | SavedCell;
 }
 
 const CodeCellActionBar: React.FC<ActionBarProps> = ({ cell }) => {
-	const order = useTypedSelector(({ tabs }) => tabs.order[cell.id]);
-	const tabNames = useTypedSelector(
-		({ tabs }) => order.map((id) => tabs.data[id].name),
+	const order = useTypedSelector(({ tabs }) => tabs.order);
+	const activeTab =
+		useTypedSelector(({ tabs }) => tabs.active[cell.id]) || order[0];
+	const tabLangs = useTypedSelector(
+		({ tabs }) => order.map((id) => tabs.data[id].code_language),
 		shallowEqual
 	);
-	const activeTab = cell.activeTab || order[0];
 	const renderedTabs = order.map((id, i) => {
 		return (
 			<ActionBarTab
-				cellId={cell.id}
-				tabId={id}
-				tabName={tabNames[i]}
+				cell_id={cell.id}
+				tab_id={id}
+				code_langauge={tabLangs[i]}
 				isActive={activeTab === id}
 				key={id}
 			/>

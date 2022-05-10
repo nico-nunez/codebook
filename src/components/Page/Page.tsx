@@ -1,28 +1,28 @@
 import './Page.css';
-import { Outlet } from 'react-router-dom';
 import { Fragment } from 'react';
 import AddCell from '../Add-Cell/Add-Cell';
 import CellItem from '../Cell/Cell';
-import PageHeader from './PageHeader';
+import PageHeader from '../PageHeader/PageHeader';
 import { useTypedSelector } from '../../hooks';
 
 const Page: React.FC = () => {
 	const page = useTypedSelector(({ page }) => page);
-	const order = useTypedSelector(({ cells: { order } }) => order);
+	const cells = useTypedSelector(({ cells }) => cells);
 	let showCodeButton = true;
 	let showTextButton = true;
-	const renderedCells = order.map(({ id, type }) => {
-		if (type === 'code') showCodeButton = false;
-		if (type === 'text') showTextButton = false;
+	const renderedCells = cells.order.map((cell_id) => {
+		const { cell_type } = cells.data[cell_id];
+		if (cell_type === 'code') showCodeButton = false;
+		if (cell_type === 'text') showTextButton = false;
 		return (
-			<Fragment key={id}>
-				<CellItem id={id} type={type} />
+			<Fragment key={cell_id}>
+				<CellItem id={cell_id} />
 			</Fragment>
 		);
 	});
 	return (
 		<>
-			<PageHeader pageName={page.page_name} />
+			<PageHeader page_name={page.page_name} />
 			<div className="cell-list">
 				{renderedCells}
 				{(showCodeButton || showTextButton) && (
@@ -32,7 +32,6 @@ const Page: React.FC = () => {
 					/>
 				)}
 			</div>
-			<Outlet />
 		</>
 	);
 };

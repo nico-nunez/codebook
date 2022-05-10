@@ -9,7 +9,7 @@ const App = () => {
 	useEffect(() => {
 		authenticateSession();
 		return;
-	}, []);
+	}, [authenticateSession]);
 
 	return (
 		<BrowserRouter>

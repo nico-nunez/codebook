@@ -1,46 +1,41 @@
 import { CellActionType } from '../action-types';
-import { CellTypes } from '../cell';
+import { CellTypes, SavedCell } from '../cell';
 
 export type CellDirection = 'up' | 'down';
 
 export interface CreateCellAction {
 	type: CellActionType.CREATE_CELL;
 	payload: {
-		id: string;
-		type: CellTypes;
-		content?: string;
+		id: number;
+		cell_type: CellTypes;
 	};
+}
+
+export interface LoadCellAction {
+	type: CellActionType.LOAD_CELL;
+	payload: SavedCell;
 }
 
 export interface MoveCellAction {
 	type: CellActionType.MOVE_CELL;
 	payload: {
-		id: string;
+		id: number;
 		direction: CellDirection;
+	};
+}
+
+export interface UpdateCellAction {
+	type: CellActionType.UPDATE_CELL;
+	payload: {
+		id: number;
+		content: string | null;
 	};
 }
 
 export interface DeleteCellAction {
 	type: CellActionType.DELETE_CELL;
 	payload: {
-		id: string;
-		type: CellTypes;
-	};
-}
-
-export interface UpdateActiveTabAction {
-	type: CellActionType.UPDATE_ACTIVE_TAB;
-	payload: {
-		id: string;
-		tabId: string | null;
-	};
-}
-
-export interface UpdateTextCellAction {
-	type: CellActionType.UPDATE_TEXT_CELL;
-	payload: {
-		id: string;
-		content: string;
+		id: number;
 	};
 }
 
@@ -51,8 +46,8 @@ export interface ResetCellsAction {
 
 export type CellAction =
 	| CreateCellAction
+	| LoadCellAction
 	| MoveCellAction
+	| UpdateCellAction
 	| DeleteCellAction
-	| UpdateActiveTabAction
-	| UpdateTextCellAction
 	| ResetCellsAction;

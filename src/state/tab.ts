@@ -1,11 +1,10 @@
 import { EditorLanguages } from '../components/Code-Editor/code-editor';
 
 export interface Tab {
-	id: string;
-	cellId: string;
-	name: string;
-	language: EditorLanguages;
-	content: string;
+	id: number;
+	cell_id: number;
+	code_language: EditorLanguages;
+	content: string | null;
 }
 
 export const initialContent = {
@@ -35,7 +34,7 @@ export const initialContent = {
 	css: '',
 };
 
-type tabType = {
+export interface SavedTab {
 	id: number;
 	cell_id: number;
 	code_language: EditorLanguages;
@@ -43,4 +42,4 @@ type tabType = {
 	order_index: number;
 	created_at: Date;
 	updated_at: Date;
-};
+}

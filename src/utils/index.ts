@@ -12,16 +12,16 @@ export const restoreBundles = async (tabs: TabsState) => {
 	const bundles: BundleState = {};
 	const tabsArr = Object.values(tabs.data);
 	tabsArr.forEach(async (tab) => {
-		const { cellId, language, content } = tab;
-		const { code } = await bundle(content, language);
-		if (bundles[cellId]) {
-			bundles[cellId].code[language] = code;
+		const { cell_id, code_language, content } = tab;
+		const { code } = await bundle(content || '', code_language);
+		if (bundles[cell_id]) {
+			bundles[cell_id].code[code_language] = code;
 		} else {
-			bundles[cellId] = {
+			bundles[cell_id] = {
 				loading: false,
 				error: '',
 				warning: '',
-				code: { [language]: code },
+				code: { [code_language]: code },
 			};
 		}
 	});

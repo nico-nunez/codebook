@@ -1,58 +1,63 @@
+import { store } from '../store';
 import { Dispatch } from 'redux';
-import { CellActionType } from '../action-types';
-import { TabActionType } from '../action-types';
-import { CreateTabAction } from '../actions';
+import { CellTypes, SavedCell } from '../cell';
+import { randomId } from '../helpers';
+import { CellActionType, TabActionType } from '../action-types';
+import { editorLangs } from '../../components/Code-Editor/code-editor';
+import { UpdateActiveTabAction, CreateTabAction } from '../actions/tabsActions';
 import {
 	CreateCellAction,
+	LoadCellAction,
 	MoveCellAction,
+	UpdateCellAction,
 	DeleteCellAction,
-	UpdateActiveTabAction,
-	UpdateTextCellAction,
 	ResetCellsAction,
 	CellDirection,
 } from '../actions/cellsActions';
-import { CellTypes } from '../cell';
-import { randomId } from '../helpers';
-import { editorLangs } from '../../components/Code-Editor/code-editor';
 
-type NewCellAction = CreateCellAction | CreateTabAction | UpdateActiveTabAction;
+type NewCellDispatch =
+	| CreateCellAction
+	| CreateTabAction
+	| UpdateActiveTabAction;
 
-export const createCell = (type: CellTypes, content?: string) => {
-	return (dispatch: Dispatch<NewCellAction>) => {
-		const cellId = randomId();
+export const createCell = (cell_type: CellTypes) => {
+	return (dispatch: Dispatch<NewCellDispatch>) => {
+		const cell_id = randomId();
 		dispatch({
 			type: CellActionType.CREATE_CELL,
 			payload: {
-				id: cellId,
-				type,
-				content,
+				id: cell_id,
+				cell_type,
 			},
 		});
 
-		if (type === 'code') {
+		if (cell_type === 'code') {
 			for (const lang of editorLangs) {
-				const tabId = randomId();
 				dispatch({
 					type: TabActionType.CREATE_TAB,
 					payload: {
-						cellId,
-						id: tabId,
-						name: lang,
-						language: lang,
-						content: '',
+						cell_id,
+						code_language: lang,
 					},
 				});
 			}
 			dispatch({
-				type: CellActionType.UPDATE_ACTIVE_TAB,
-				payload: { id: cellId, tabId: null },
+				type: TabActionType.UPDATE_ACTIVE_TAB,
+				payload: { cell_id, tab_id: null },
 			});
 		}
 	};
 };
 
+export const loadCell = (data: SavedCell): LoadCellAction => {
+	return {
+		type: CellActionType.LOAD_CELL,
+		payload: data,
+	};
+};
+
 export const moveCell = (
-	id: string,
+	id: number,
 	direction: CellDirection
 ): MoveCellAction => {
 	return {
@@ -64,36 +69,25 @@ export const moveCell = (
 	};
 };
 
-export const deleteCell = (id: string, type: CellTypes): DeleteCellAction => {
+export const updateCell = (
+	id: number,
+	content: string
+): UpdateCellAction | void => {
+	const { cells } = store.getState();
+	if (cells.data[id].cell_type === 'text')
+		return {
+			type: CellActionType.UPDATE_CELL,
+			payload: {
+				id,
+				content,
+			},
+		};
+};
+
+export const deleteCell = (id: number, type: CellTypes): DeleteCellAction => {
 	return {
 		type: CellActionType.DELETE_CELL,
-		payload: { id, type },
-	};
-};
-
-export const updateActiveTab = (
-	id: string,
-	tabId: string | null
-): UpdateActiveTabAction => {
-	return {
-		type: CellActionType.UPDATE_ACTIVE_TAB,
-		payload: {
-			id,
-			tabId,
-		},
-	};
-};
-
-export const updateTextCell = (
-	id: string,
-	content: string
-): UpdateTextCellAction => {
-	return {
-		type: CellActionType.UPDATE_TEXT_CELL,
-		payload: {
-			id,
-			content,
-		},
+		payload: { id },
 	};
 };
 

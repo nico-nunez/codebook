@@ -3,9 +3,8 @@ import { MyStore } from '../store';
 
 export * from './cellsReducerHelpers';
 export * from './tabsReducerHelpers';
-export * from './newPage';
 export const randomId = () => {
-	return Math.random().toString(36).substring(2, 9);
+	return Math.round(Math.random() * 1000000);
 };
 
 export const toggleSaved = (store: MyStore) => {

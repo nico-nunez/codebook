@@ -2,7 +2,7 @@ import ActionBarControls from '../Action-Bar/Action-Bar-Controls';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 
 interface ActionBarProps {
-	id: string;
+	id: number;
 }
 
 const TextCellActionBar: React.FC<ActionBarProps> = ({ id }) => {

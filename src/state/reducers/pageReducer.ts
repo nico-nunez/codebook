@@ -1,8 +1,10 @@
 import produce from 'immer';
 import { PageAction } from '../actions';
 import { PageActionType } from '../action-types';
+import { randomId } from '../helpers';
 
 export interface PageState {
+	id: number | null;
 	loading: boolean;
 	error: string | null;
 	page_name: string;
@@ -10,6 +12,7 @@ export interface PageState {
 }
 
 const initialState: PageState = {
+	id: null,
 	loading: false,
 	error: null,
 	page_name: 'New Page',
@@ -19,8 +22,19 @@ const initialState: PageState = {
 const reducer = produce(
 	(state: PageState = initialState, action: PageAction): PageState => {
 		switch (action.type) {
-			case PageActionType.NEW_PAGE: {
-				state = initialState;
+			case PageActionType.CREATE_PAGE: {
+				const {
+					id = randomId(),
+					page_name = 'New Page',
+					error = null,
+				} = action.payload;
+				state = {
+					id,
+					page_name,
+					error,
+					loading: false,
+					saved_changes: true,
+				};
 				return state;
 			}
 			case PageActionType.UPDATE_PAGE_NAME:

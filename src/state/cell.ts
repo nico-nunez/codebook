@@ -1,18 +1,12 @@
 export type CellTypes = 'code' | 'text';
 
 export interface Cell {
-	id: string;
-	type: CellTypes;
+	id: number;
+	cell_type: CellTypes;
+	content: string | null;
 }
 
-export interface Code_Cell extends Cell {
-	type: 'code';
-	activeTab: string | null;
-}
-
-export type Text_Cell = Cell & { type: 'text'; content: string };
-
-type cellType = {
+export interface SavedCell {
 	id: number;
 	page_id: number;
 	cell_type: CellTypes;
@@ -20,4 +14,4 @@ type cellType = {
 	order_index: number;
 	created_at: Date;
 	updated_at: Date;
-};
+}

@@ -1,76 +1,86 @@
 import {
-	DeleteTabAction,
 	CreateTabAction,
-	MoveTabAction,
+	LoadTabAction,
 	UpdateTabAction,
+	MoveTabAction,
+	UpdateActiveTabAction,
+	DeleteTabAction,
 } from '../actions';
 import { randomId } from '../helpers';
-import { Tab } from '../tab';
+import { SavedTab, Tab } from '../tab';
 
 export interface TabsState {
-	order: {
-		[key: string]: string[];
+	order: number[];
+	active: {
+		[key: number]: number | null; // -> cell_id: tab_id
 	};
 	data: {
-		[key: string]: Tab;
+		[key: number]: Tab;
 	};
 }
 
 export const initialTabsState: TabsState = {
-	order: {},
+	order: [],
+	active: {},
 	data: {},
 };
 
 const createTab = (state: TabsState, action: CreateTabAction) => {
-	const { cellId, id, name, content, language } = action.payload;
+	const { cell_id, code_language } = action.payload;
 	const newTab: Tab = {
-		id: id || randomId(),
-		cellId,
-		name,
-		language,
-		content: content || '',
+		id: randomId(),
+		code_language,
+		content: '',
+		cell_id,
 	};
-	if (!state.order[cellId]) state.order[cellId] = [];
-	state.order[cellId].push(newTab.id);
+	state.order.push(newTab.id);
 	state.data[newTab.id] = newTab;
+	return state;
+};
+
+const loadTab = (state: TabsState, action: LoadTabAction) => {
+	const tab: SavedTab = { ...action.payload };
+	state.order.push(tab.id);
+	state.data[tab.id] = tab;
 	return state;
 };
 
 const moveTab = (state: TabsState, action: MoveTabAction) => {
 	const { id, direction } = action.payload;
-	const cellId = state.data[id].cellId;
-	const index = state.order[cellId].indexOf(id);
+	const index = state.order.indexOf(id);
 	const targetIndex = direction === 'left' ? index - 1 : index + 1;
-	if (targetIndex < 0 || targetIndex >= state.order[cellId].length) {
+	if (targetIndex < 0 || targetIndex >= state.order.length) {
 		return state;
 	}
-	state.order[cellId][index] = state.order[cellId][targetIndex];
-	state.order[cellId][targetIndex] = id;
+	state.order[index] = state.order[targetIndex];
+	state.order[targetIndex] = id;
+	return state;
+};
+
+const updateTab = (state: TabsState, action: UpdateTabAction) => {
+	const { id, content } = action.payload;
+	state.data[id].content = content;
+	return state;
+};
+
+const updateActiveTab = (state: TabsState, action: UpdateActiveTabAction) => {
+	const { cell_id, tab_id } = action.payload;
+	state.active[cell_id] = tab_id || state.order[0];
 	return state;
 };
 
 const deleteTab = (state: TabsState, action: DeleteTabAction) => {
 	const { id } = action.payload;
-	const cellId = state.data[id].cellId;
-	state.order[cellId] = state.order[cellId].filter((tabId) => tabId !== id);
+	state.order = state.order.filter((tab_id) => tab_id !== id);
 	delete state.data[id];
-	return state;
-};
-
-const updateTab = (state: TabsState, action: UpdateTabAction) => {
-	const { id, language, content } = action.payload;
-	if (content !== undefined) {
-		state.data[id].content = content;
-	}
-	if (language !== undefined) {
-		state.data[id].language = language;
-	}
 	return state;
 };
 
 export const tabsAction = {
 	createTab,
+	loadTab,
 	moveTab,
-	deleteTab,
 	updateTab,
+	updateActiveTab,
+	deleteTab,
 };

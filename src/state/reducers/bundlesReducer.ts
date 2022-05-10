@@ -23,22 +23,22 @@ const reducer = produce(
 	(state: BundleState = initialState, action: BundleAction): BundleState => {
 		switch (action.type) {
 			case BundleActionType.BUNDLE_START: {
-				const { cellId, language } = action.payload;
-				if (!state[cellId]) state[cellId] = {} as CodeBundle;
-				state[cellId].loading = true;
-				state[cellId].error = '';
-				state[cellId].warning = '';
-				state[cellId].code = state[cellId].code || {};
-				state[cellId].code[language] = '';
+				const { cell_id, code_language } = action.payload;
+				if (!state[cell_id]) state[cell_id] = {} as CodeBundle;
+				state[cell_id].loading = true;
+				state[cell_id].error = '';
+				state[cell_id].warning = '';
+				state[cell_id].code = state[cell_id].code || {};
+				state[cell_id].code[code_language] = '';
 
 				return state;
 			}
 			case BundleActionType.BUNDLE_COMPLETE: {
-				const { cellId, language, bundle } = action.payload;
-				state[cellId].loading = false;
-				state[cellId].error = bundle.error;
-				state[cellId].warning = bundle.warning;
-				state[cellId].code[language] = bundle.code;
+				const { cell_id, code_language, bundle } = action.payload;
+				state[cell_id].loading = false;
+				state[cell_id].error = bundle.error;
+				state[cell_id].warning = bundle.warning;
+				state[cell_id].code[code_language] = bundle.code;
 				return state;
 			}
 

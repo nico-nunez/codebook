@@ -3,42 +3,44 @@ import { useEffect } from 'react';
 import Preview from '../Preview/Preview';
 import CodeEditor from '../Code-Editor/code-editor';
 import Resizable from '../Resizable/Resizable';
-import { useActions } from '../../hooks/use-actions';
-import { useTypedSelector, useCumulativeCode } from '../../hooks';
-import { Code_Cell, Tab } from '../../state';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks';
+import { Cell, SavedCell, Tab } from '../../state';
 
 interface CodeCellProps {
-	cell: Code_Cell;
+	cell: Cell | SavedCell;
 }
 
 export interface TabsData {
-	[key: string]: Tab;
+	[key: number]: Tab;
 }
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 	const { createBundle, updateTab } = useActions();
 	const tabsData = useTypedSelector(({ tabs }) => {
-		const tabsData = tabs.order[cell.id].map((id) => tabs.data[id]);
+		const tabsData = tabs.order.map((id) => tabs.data[id]);
 		return tabsData;
 	});
+	const activeTab =
+		useTypedSelector(({ tabs }) => tabs.active[cell.id]) || tabsData[0];
 	const bundle = useTypedSelector(({ bundles }) => bundles[cell.id]);
 	const {
 		id: tabId,
-		language,
+		code_language,
 		content,
-	} = tabsData.find((tab) => tab.id === cell.activeTab) || tabsData[0];
+	} = tabsData.find((tab) => tab.id === activeTab) || tabsData[0];
 	useEffect(() => {
 		if (!bundle) {
-			createBundle(cell.id, language, content);
+			createBundle(cell.id, code_language, content || '');
 		}
 		const timer = setTimeout(async () => {
-			createBundle(cell.id, language, content);
+			createBundle(cell.id, code_language, content || '');
 		}, 1000);
 		return () => clearTimeout(timer);
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tabId, content, language, cell.id, createBundle]);
+	}, [tabId, content, code_language, cell.id, createBundle]);
 
 	const onInputChange = (value: string) => {
-		updateTab(tabId, language, value);
+		updateTab(tabId, value);
 	};
 	return (
 		<>
@@ -48,7 +50,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 						<Resizable direction="horiztonal">
 							<CodeEditor
 								initialValue={content || ''}
-								language={language}
+								code_language={code_language}
 								onInputChange={onInputChange}
 							/>
 						</Resizable>

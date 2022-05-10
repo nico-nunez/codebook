@@ -1,8 +1,18 @@
 import { PageActionType } from '../action-types';
+import { FullPage } from '../page';
 
-export interface NewPageAction {
-	type: PageActionType.NEW_PAGE;
-	payload: {};
+export interface CreatePageAction {
+	type: PageActionType.CREATE_PAGE;
+	payload: {
+		id?: number;
+		page_name?: string;
+		error?: string | null;
+	};
+}
+
+export interface LoadPageAction {
+	type: PageActionType.LOAD_PAGE;
+	payload: FullPage;
 }
 
 export interface UpdatePageNameAction {
@@ -15,6 +25,11 @@ export interface UpdatePageNameAction {
 export interface UpdateSavedChangesAction {
 	type: PageActionType.UPDATE_SAVED_CHANGES;
 	payload: { saved_changes: boolean };
+}
+
+export interface SavePageAction {
+	type: PageActionType.SAVE_PAGE;
+	payload: {};
 }
 
 // --- TODO ---
@@ -32,8 +47,10 @@ export interface UpdateSavedChangesAction {
 // }
 
 export type PageAction =
-	| NewPageAction
+	| CreatePageAction
+	| LoadPageAction
 	| UpdatePageNameAction
-	| UpdateSavedChangesAction;
+	| UpdateSavedChangesAction
+	| SavePageAction;
 // | AddPageImport
 // | RemovePageImport;

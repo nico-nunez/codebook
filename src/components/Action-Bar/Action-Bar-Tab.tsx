@@ -2,25 +2,25 @@ import React from 'react';
 import { useActions } from '../../hooks';
 
 interface ActionBarTabProps {
-	tabId: string;
-	tabName: string;
+	tab_id: number;
+	code_langauge: string;
 	isActive: boolean;
-	cellId: string;
+	cell_id: number;
 }
 
 export const ActionBarTab: React.FC<ActionBarTabProps> = ({
-	cellId,
-	tabId,
-	tabName,
+	cell_id,
+	tab_id,
+	code_langauge,
 	isActive,
 }) => {
 	const { updateActiveTab } = useActions();
 	return (
 		<div
 			className={`action-bar-tab button is-small ${isActive && 'active'}`}
-			onClick={() => updateActiveTab(cellId, tabId)}
+			onClick={() => updateActiveTab(cell_id, tab_id)}
 		>
-			<span>{tabName}</span>
+			<span>{code_langauge}</span>
 		</div>
 	);
 };

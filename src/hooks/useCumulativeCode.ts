@@ -1,15 +1,15 @@
 import { EditorLanguages } from '../components/Code-Editor/code-editor';
-import { useTypedSelector } from './use-type-selector';
+import { useTypedSelector } from './useTypeSelector';
 
 export const useCumulativeCode = (
 	cellId: string,
-	language: EditorLanguages
+	code_language: EditorLanguages
 ) => {
 	return useTypedSelector(({ tabs }) => {
 		const cumulative: string[] = [];
-		for (const tab of tabs.order[cellId]) {
-			if (tabs.data[tab].language === language) {
-				cumulative.push(tabs.data[tab].content);
+		for (const id of tabs.order) {
+			if (tabs.data[id].code_language === code_language) {
+				cumulative.push(tabs.data[id].content || '');
 			}
 		}
 		return cumulative;

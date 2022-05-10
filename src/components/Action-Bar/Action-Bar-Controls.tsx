@@ -4,7 +4,7 @@ import { useActions } from '../../hooks';
 import ActionButton from './Action-Button';
 
 interface ActionBarControlsProps {
-	id: string;
+	id: number;
 	type: CellTypes;
 }
 

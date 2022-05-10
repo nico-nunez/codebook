@@ -1,40 +1,50 @@
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 import { TabActionType } from '../action-types';
+import { SavedTab } from '../tab';
 
 export type TabDirection = 'left' | 'right';
 
 export interface CreateTabAction {
 	type: TabActionType.CREATE_TAB;
 	payload: {
-		cellId: string;
-		id: string | null;
-		name: string;
-		language: EditorLanguages;
-		content?: string;
+		cell_id: number;
+		code_language: EditorLanguages;
 	};
+}
+
+export interface LoadTabAction {
+	type: TabActionType.LOAD_TAB;
+	payload: SavedTab;
 }
 
 export interface MoveTabAction {
 	type: TabActionType.MOVE_TAB;
 	payload: {
-		id: string;
+		id: number;
 		direction: TabDirection;
-	};
-}
-
-export interface DeleteTabAction {
-	type: TabActionType.DELETE_TAB;
-	payload: {
-		id: string;
 	};
 }
 
 export interface UpdateTabAction {
 	type: TabActionType.UPDATE_TAB;
 	payload: {
-		id: string;
-		language?: EditorLanguages;
-		content?: string;
+		id: number;
+		content: string;
+	};
+}
+
+export interface DeleteTabAction {
+	type: TabActionType.DELETE_TAB;
+	payload: {
+		id: number;
+	};
+}
+
+export interface UpdateActiveTabAction {
+	type: TabActionType.UPDATE_ACTIVE_TAB;
+	payload: {
+		cell_id: number;
+		tab_id: number | null;
 	};
 }
 
@@ -45,7 +55,9 @@ export interface ResetTabsAction {
 
 export type TabAction =
 	| CreateTabAction
+	| LoadTabAction
 	| MoveTabAction
-	| DeleteTabAction
 	| UpdateTabAction
+	| UpdateActiveTabAction
+	| DeleteTabAction
 	| ResetTabsAction;

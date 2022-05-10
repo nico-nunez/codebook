@@ -1,6 +1,6 @@
-export { useTypedSelector } from './use-type-selector';
-export { useActions } from './use-actions';
-export { useCumulativeCode } from './use-cumulative-code';
-export { useToggle } from './use-toggle';
+export { useTypedSelector } from './useTypeSelector';
+export { useActions } from './useActions';
+export { useCumulativeCode } from './useCumulativeCode';
+export { useToggle } from './useToggle';
 export { useSrcDoc } from './useSrcDoc';
 export * from './useRequests';

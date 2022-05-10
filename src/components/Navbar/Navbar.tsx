@@ -2,8 +2,7 @@ import './Navbar.css';
 import { Link } from 'react-router-dom';
 import NavbarDropdown from './Navbar-Drowdown';
 import { useTypedSelector } from '../../hooks';
-import { useActions, useToggle } from '../../hooks';
-import AuthModal from '../AuthModal/AuthModal';
+import { useActions } from '../../hooks';
 
 const Navbar = () => {
 	const { displayModal } = useActions();
@@ -61,7 +60,6 @@ const Navbar = () => {
 					</div>
 				</div>
 			</div>
-			<AuthModal />
 		</nav>
 	);
 };

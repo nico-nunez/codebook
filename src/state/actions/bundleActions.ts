@@ -4,16 +4,16 @@ import { BundleActionType } from '../action-types';
 export interface BundleStartAction {
 	type: BundleActionType.BUNDLE_START;
 	payload: {
-		cellId: string;
-		language: EditorLanguages;
+		cell_id: number;
+		code_language: EditorLanguages;
 	};
 }
 
 export interface BundleCompleteAction {
 	type: BundleActionType.BUNDLE_COMPLETE;
 	payload: {
-		cellId: string;
-		language: EditorLanguages;
+		cell_id: number;
+		code_language: EditorLanguages;
 		bundle: {
 			code: string;
 			error: string;

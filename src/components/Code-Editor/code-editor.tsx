@@ -34,13 +34,13 @@ JSXTypes.JSXText.options.inlineClassName = require('./syntax.css');
 export interface CodeEditorProps {
 	initialValue: string;
 	onInputChange(value: string): void;
-	language?: EditorLanguages;
+	code_language?: EditorLanguages;
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
 	initialValue,
 	onInputChange,
-	language = defaultLang,
+	code_language = defaultLang,
 }) => {
 	const editorRef = useRef<editor.IStandaloneCodeEditor>();
 
@@ -57,8 +57,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 		const unformatted = editorRef.current.getValue();
 		const formatted = prettier
 			.format(unformatted, {
-				parser: parsers[language].parser,
-				plugins: parsers[language].plugins,
+				parser: parsers[code_language].parser,
+				plugins: parsers[code_language].plugins,
 				singleQuote: true,
 			})
 			.replace(/\n$/, '');
@@ -75,7 +75,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 				onChange={onEditorInputChange}
 				value={initialValue}
 				height="100%"
-				language={language}
+				language={code_language}
 				theme="vs-dark"
 				options={{
 					wordWrap: 'on',
