@@ -12,25 +12,19 @@ const Navbar = () => {
 		if (auth.isAuthenticated && auth.user) {
 			return (
 				<>
-					<NavbarDropdown title="Recent">
-						<Link to="">Untitled 1</Link>
-						<Link to="">Untitled 2</Link>
-						<Link to="">Untitled 3</Link>
-						<Link to="">Untitled 4</Link>
-						<Link to="">Untitled 5</Link>
-					</NavbarDropdown>
+					<NavbarDropdown title="Recent"></NavbarDropdown>
 					<NavbarDropdown title={auth.user.profile_name}>
 						<Link to="">Profile</Link>
 						<Link to="">Pages</Link>
 						<span
 							style={{
-								borderBottom: '1px solid rgba(255,255,255,0.2)',
+								borderBottom: '1px solid rgba(200,200,200,0.2)',
 								marginBottom: '5px',
 							}}
 						></span>
-						<Link to="/" onClick={() => logoutUser()}>
+						<a href="/" onClick={() => logoutUser()}>
 							Logout
-						</Link>
+						</a>
 					</NavbarDropdown>
 				</>
 			);
@@ -50,9 +44,10 @@ const Navbar = () => {
 	return (
 		<nav className="navbar" role="navigation" aria-label="main navigation">
 			<div className="navbar-brand">
-				<span className="navbar-item brand-name">Codebook</span>
+				<Link to="/" className="navbar-item brand-name">
+					Codebook
+				</Link>
 			</div>
-
 			<div className="navbar-menu">
 				<div className="navbar-end">
 					<div className="navbar-item">

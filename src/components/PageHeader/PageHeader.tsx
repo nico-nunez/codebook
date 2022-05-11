@@ -1,8 +1,9 @@
 import './PageHeader.css';
-import { useActions } from '../../hooks';
-import { useTypedSelector } from '../../hooks';
 import PageName from './PageName';
+import { useActions } from '../../hooks';
 import HeaderButton from './PageHeaderBtn';
+import { useTypedSelector } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 
 interface PageHeaderProps {
@@ -10,9 +11,10 @@ interface PageHeaderProps {
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
-	const { newPage, displayModal, saveNewPage } = useActions();
-	const savedChanges = useTypedSelector(({ page }) => page.saved_changes);
-	const isAuthenticated = useTypedSelector(({ auth }) => auth.isAuthenticated);
+	const navigate = useNavigate();
+	const { newPage, displayModal, saveNewPage, saveExistingPage } = useActions();
+	const page = useTypedSelector(({ page }) => page);
+	const auth = useTypedSelector(({ auth }) => auth);
 	const onImportPage = () => {
 		// TODO
 		displayModal('alert');
@@ -24,10 +26,16 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 	};
 
 	const onSavePage = () => {
-		if (isAuthenticated) {
-			saveNewPage();
-		} else {
+		if (!auth.isAuthenticated) {
 			displayModal('login');
+			return;
+		}
+		if (auth.isAuthenticated && !page.user_id) {
+			saveNewPage(navigate);
+			return;
+		}
+		if (auth.isAuthenticated && auth.user && auth.user.id === page.user_id) {
+			saveExistingPage();
 		}
 	};
 	const onNewPage = () => {
@@ -56,7 +64,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 						<HeaderButton
 							text="Save"
 							onClick={onSavePage}
-							disabled={savedChanges}
+							disabled={page.saved_changes}
 						/>
 						<HeaderButton text="New" onClick={onNewPage} />
 					</div>

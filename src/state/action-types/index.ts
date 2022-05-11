@@ -3,7 +3,7 @@ export enum CellActionType {
 	LOAD_CELL = 'load_cell',
 	MOVE_CELL = 'move_cell',
 	DELETE_CELL = 'delete_cell',
-	UPDATE_CELL = 'update_text_cell',
+	UPDATE_CELL = 'update_cell',
 	RESET_CELLS = 'reset_cells',
 }
 
@@ -13,6 +13,8 @@ export enum PageActionType {
 	UPDATE_SAVED_CHANGES = 'update_saved_changes',
 	SAVE_PAGE = 'save_page',
 	LOAD_PAGE = 'load_page',
+	SET_PAGE_ERROR = 'set_page_error',
+	CLEAR_PAGE_ERROR = 'clear_page_error',
 	// --- TODO ---
 	// REMOVE_PAGE_IMPORT = 'remove_page_import',
 	// ADD_PAGE_IMPORT = 'add_page_import',

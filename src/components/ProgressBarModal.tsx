@@ -1,7 +1,6 @@
 import Modal from './Modal/Modal';
 
 const ProgressBarModal = () => {
-	console.log('prgress bar render');
 	return (
 		<Modal name="progressBar" title={null} cancelBtn={false} confirmBtn={false}>
 			<div className="progress-cover" style={{ marginTop: '50%' }}>

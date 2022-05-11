@@ -1,5 +1,5 @@
-import { store, TabsState } from '../state';
 import bundle from '../bundler';
+import { store, TabsState } from '../state';
 import { BundleState } from '../state/reducers/bundlesReducer';
 
 export const saveStore = () => {

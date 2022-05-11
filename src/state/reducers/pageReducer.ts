@@ -9,6 +9,9 @@ export interface PageState {
 	error: string | null;
 	page_name: string;
 	saved_changes: boolean;
+	user_id?: number;
+	created_at?: Date;
+	updatae_at?: Date;
 }
 
 const initialState: PageState = {
@@ -37,12 +40,30 @@ const reducer = produce(
 				};
 				return state;
 			}
+
+			case PageActionType.LOAD_PAGE:
+				state = {
+					...action.payload,
+					loading: false,
+					error: null,
+					saved_changes: true,
+				};
+				return state;
+
 			case PageActionType.UPDATE_PAGE_NAME:
 				state.page_name = action.payload.page_name;
 				return state;
 
 			case PageActionType.UPDATE_SAVED_CHANGES:
 				state.saved_changes = action.payload.saved_changes;
+				return state;
+
+			case PageActionType.SET_PAGE_ERROR:
+				state.error = action.payload.error;
+				return state;
+
+			case PageActionType.CLEAR_PAGE_ERROR:
+				state.error = null;
 				return state;
 
 			// --- TODO ---

@@ -1,5 +1,5 @@
 import { PageActionType } from '../action-types';
-import { FullPage } from '../models';
+import { SavedPage } from '../models';
 
 export interface CreatePageAction {
 	type: PageActionType.CREATE_PAGE;
@@ -12,7 +12,7 @@ export interface CreatePageAction {
 
 export interface LoadPageAction {
 	type: PageActionType.LOAD_PAGE;
-	payload: FullPage;
+	payload: SavedPage;
 }
 
 export interface UpdatePageNameAction {
@@ -29,6 +29,18 @@ export interface UpdateSavedChangesAction {
 
 export interface SavePageAction {
 	type: PageActionType.SAVE_PAGE;
+	payload: {};
+}
+
+export interface SetPageErrorAction {
+	type: PageActionType.SET_PAGE_ERROR;
+	payload: {
+		error: string;
+	};
+}
+
+export interface ClearPageErrorAction {
+	type: PageActionType.CLEAR_PAGE_ERROR;
 	payload: {};
 }
 
@@ -51,6 +63,8 @@ export type PageAction =
 	| LoadPageAction
 	| UpdatePageNameAction
 	| UpdateSavedChangesAction
-	| SavePageAction;
+	| SavePageAction
+	| SetPageErrorAction
+	| ClearPageErrorAction;
 // | AddPageImport
 // | RemovePageImport;
