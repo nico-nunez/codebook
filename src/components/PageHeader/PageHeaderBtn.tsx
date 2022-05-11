@@ -1,17 +1,19 @@
 interface PageHeaderBtnProps {
 	text: string;
+	className?: string;
 	onClick: () => void;
 	disabled?: boolean;
 }
 
 const PageHeaderBtn: React.FC<PageHeaderBtnProps> = ({
 	text,
+	className,
 	onClick,
 	disabled,
 }) => {
 	return (
 		<button
-			className="button is-small is-rounded"
+			className={`button is-small is-rounded ${className}`}
 			onClick={onClick}
 			disabled={disabled}
 		>

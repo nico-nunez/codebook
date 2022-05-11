@@ -27,10 +27,16 @@ export const initialTabsState: TabsState = {
 
 const createTab = (state: TabsState, action: CreateTabAction) => {
 	const { cell_id, code_language } = action.payload;
+	const content =
+		code_language === 'javascript'
+			? `// Load files from unpkg.com:
+// import React from 'react'; // example
+`
+			: '';
 	const newTab: Tab = {
 		id: randomId(),
 		code_language,
-		content: '',
+		content,
 		cell_id,
 	};
 	state.order.push(newTab.id);

@@ -17,7 +17,7 @@ export const ActionBarTab: React.FC<ActionBarTabProps> = ({
 	const { updateActiveTab } = useActions();
 	return (
 		<div
-			className={`action-bar-tab button is-small ${isActive && 'active'}`}
+			className={`action-bar-tab ${isActive && 'active'}`}
 			onClick={() => updateActiveTab(cell_id, tab_id)}
 		>
 			<span>{code_langauge}</span>

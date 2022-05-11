@@ -14,6 +14,7 @@ interface CodeCellProps {
 export interface TabsData {
 	[key: number]: Tab;
 }
+
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 	const { createBundle, updateTab } = useActions();
 	const tabsData = useTypedSelector(({ tabs }) => {

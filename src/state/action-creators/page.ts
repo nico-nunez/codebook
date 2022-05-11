@@ -1,34 +1,35 @@
 import { store } from '../store';
 import { Dispatch } from 'redux';
+import { resetBundles } from './bundles';
+import { loadTab, resetTabs } from './tabs';
 import axios, { AxiosResponse } from 'axios';
+import { loadCell, resetCells } from './cells';
 import { FullPage, SavedPage } from '../models';
+import { PageActionType } from '../action-types';
+import { displayModal, hideModal } from './modal';
 import { NavigateFunction } from 'react-router-dom';
-import { ResetBundlesAction } from '../actions/bundleActions';
-import { DisplayModalAction, HideModalAction } from '../actions';
-import { LoadCellAction, ResetCellsAction } from '../actions/cellsActions';
-import { LoadTabAction, ResetTabsAction } from '../actions/tabsActions';
 import {
-	CreatePageAction,
+	DisplayModalAction,
+	HideModalAction,
+	ResetBundlesAction,
+	LoadCellAction,
+	ResetCellsAction,
+	LoadTabAction,
+	ResetTabsAction,
+} from '../actions';
+import {
 	LoadPageAction,
 	UpdatePageNameAction,
 	UpdateSavedChangesAction,
+	ResetPageAction,
 	SetPageErrorAction,
 	ClearPageErrorAction,
-	// AddPageImport,
-	// RemovePageImport,
 } from '../actions/pageActions';
-import {
-	BundleActionType,
-	CellActionType,
-	ModalActionType,
-	PageActionType,
-	TabActionType,
-} from '../action-types';
 
 axios.defaults.withCredentials = true;
 
 type GenerateNewPageAction =
-	| CreatePageAction
+	| ResetPageAction
 	| ResetCellsAction
 	| ResetTabsAction
 	| ResetBundlesAction;
@@ -48,22 +49,10 @@ type LoadFullPageAction =
 // New Page
 export const newPage = () => {
 	return (dispatch: Dispatch<GenerateNewPageAction>) => {
-		dispatch({
-			type: PageActionType.CREATE_PAGE,
-			payload: {},
-		});
-		dispatch({
-			type: CellActionType.RESET_CELLS,
-			payload: {},
-		});
-		dispatch({
-			type: TabActionType.RESET_TABS,
-			payload: {},
-		});
-		dispatch({
-			type: BundleActionType.RESET_BUNDLES,
-			payload: {},
-		});
+		dispatch(resetPage());
+		dispatch(resetCells());
+		dispatch(resetTabs());
+		dispatch(resetBundles());
 	};
 };
 
@@ -72,12 +61,7 @@ export const saveNewPage = (navigate: NavigateFunction) => {
 	return async (dispatch: Dispatch<LoadFullPageAction>) => {
 		const state = store.getState();
 		try {
-			dispatch({
-				type: ModalActionType.DISPLAY_MODAL,
-				payload: {
-					modalName: 'progressBar',
-				},
-			});
+			dispatch(displayModal('progressBar'));
 			const page_name = state.page.page_name;
 			const cells = state.cells.order.map(
 				(cell_id) => state.cells.data[cell_id]
@@ -91,22 +75,11 @@ export const saveNewPage = (navigate: NavigateFunction) => {
 					tabs,
 				}
 			);
-			dispatch({
-				type: ModalActionType.HIDE_MODAL,
-				payload: {},
-			});
+			dispatch(hideModal());
 			navigate(`/pages/${data.id}`);
 		} catch (err: any) {
-			dispatch({
-				type: ModalActionType.HIDE_MODAL,
-				payload: {},
-			});
-			dispatch({
-				type: PageActionType.SET_PAGE_ERROR,
-				payload: {
-					error: err.response.data.error.messages,
-				},
-			});
+			dispatch(hideModal());
+			dispatch(setPageError(err.response.data.error.messages));
 		}
 	};
 };
@@ -136,20 +109,9 @@ export const saveExistingPage = () => {
 				cells,
 				tabs,
 			});
-			dispatch({
-				type: PageActionType.UPDATE_SAVED_CHANGES,
-				payload: {
-					saved_changes: true,
-				},
-			});
+			dispatch(updateSavedChanges(true));
 		} catch (err: any) {
-			console.log(err);
-			dispatch({
-				type: PageActionType.SET_PAGE_ERROR,
-				payload: {
-					error: err.response.data.error.messages,
-				},
-			});
+			dispatch(setPageError(err.response.data.error.messages));
 		}
 	};
 };
@@ -163,14 +125,17 @@ export const fetchPage = (id: number | null, navigate: NavigateFunction) => {
 			);
 			loadFullPage(dispatch, data);
 		} catch (err: any) {
-			dispatch({
-				type: PageActionType.SET_PAGE_ERROR,
-				payload: {
-					error: err.response.data.error.messages,
-				},
-			});
+			dispatch(setPageError(err.response.data.error.messages));
 			navigate('/');
 		}
+	};
+};
+
+// LOAD PAGE
+export const loadPage = (data: SavedPage): LoadPageAction => {
+	return {
+		type: PageActionType.LOAD_PAGE,
+		payload: { ...data },
 	};
 };
 
@@ -194,6 +159,29 @@ export const updateSavedChanges = (
 	};
 };
 
+type DeleteSavedPageAction =
+	| ResetPageAction
+	| ResetBundlesAction
+	| ResetCellsAction
+	| ResetTabsAction
+	| SetPageErrorAction;
+
+// DELETE SAVED PAGE
+export const deleteSavedPage = (id: number, navigate: NavigateFunction) => {
+	return async (dispatch: Dispatch<DeleteSavedPageAction>) => {
+		try {
+			await axios.delete(`/api/pages/${id}`);
+			dispatch(resetPage());
+			dispatch(resetCells());
+			dispatch(resetTabs());
+			dispatch(resetBundles());
+			navigate('/');
+		} catch (err: any) {
+			dispatch(setPageError(err.response.data.error.messages));
+		}
+	};
+};
+
 // SET ERROR
 export const setPageError = (error: string): SetPageErrorAction => {
 	return {
@@ -212,62 +200,27 @@ export const clearError = (): ClearPageErrorAction => {
 	};
 };
 
+// RESET PAGE
+export const resetPage = (): ResetPageAction => {
+	return {
+		type: PageActionType.RESET_PAGE,
+		payload: {},
+	};
+};
+
 const loadFullPage = (
 	dispatch: Dispatch<LoadFullPageAction>,
 	data: FullPage
 ) => {
-	dispatch({
-		type: BundleActionType.RESET_BUNDLES,
-		payload: {},
-	});
-	dispatch({
-		type: PageActionType.LOAD_PAGE,
-		payload: { ...data.page },
-	});
-	dispatch({
-		type: CellActionType.RESET_CELLS,
-		payload: {},
-	});
+	dispatch(resetCells());
+	dispatch(resetTabs());
+	dispatch(resetBundles());
+	dispatch(loadPage(data.page));
 	for (const cell of data.cells) {
-		dispatch({
-			type: CellActionType.LOAD_CELL,
-			payload: cell,
-		});
+		dispatch(loadCell(cell));
 	}
-	dispatch({
-		type: TabActionType.RESET_TABS,
-		payload: {},
-	});
 	for (const tab of data.tabs) {
-		dispatch({
-			type: TabActionType.LOAD_TAB,
-			payload: tab,
-		});
+		dispatch(loadTab(tab));
 	}
-	dispatch({
-		type: PageActionType.UPDATE_SAVED_CHANGES,
-		payload: {
-			saved_changes: true,
-		},
-	});
+	dispatch(updateSavedChanges(true));
 };
-
-// TODO
-// export const addPageImport = (id: string): AddPageImport => {
-// 	return {
-// 		type: PageActionType.ADD_PAGE_IMPORT,
-// 		payload: {
-// 			id,
-// 		},
-// 	};
-// };
-
-// TODO
-// export const removePageImport = (id: string): RemovePageImport => {
-// 	return {
-// 		type: PageActionType.REMOVE_PAGE_IMPORT,
-// 		payload: {
-// 			id,
-// 		},
-// 	};
-// };

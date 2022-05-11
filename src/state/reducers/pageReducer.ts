@@ -66,16 +66,9 @@ const reducer = produce(
 				state.error = null;
 				return state;
 
-			// --- TODO ---
-			// case PageActionType.ADD_PAGE_IMPORT:
-			// 	state.imports.push(action.payload.id);
-			// 	return state;
-
-			// case PageActionType.REMOVE_PAGE_IMPORT:
-			// 	state.imports = state.imports.filter(
-			// 		(pageId) => pageId !== action.payload.id
-			// 	);
-			// 	return state;
+			case PageActionType.RESET_PAGE:
+				state = initialState;
+				return state;
 
 			default:
 				return state;

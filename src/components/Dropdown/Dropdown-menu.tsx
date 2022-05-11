@@ -14,8 +14,8 @@ const DropdownMenu: React.FC<DropdownProps> = ({
 	return (
 		<div
 			className={`dropdown action-bar ${isActive && 'is-active'}`}
-			onMouseEnter={toggleActive}
-			onMouseLeave={toggleActive}
+			onMouseEnter={() => toggleActive()}
+			onMouseLeave={() => toggleActive()}
 		>
 			<div className="dropdown-trigger">
 				<button

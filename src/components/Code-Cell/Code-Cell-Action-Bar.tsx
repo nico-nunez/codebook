@@ -30,7 +30,7 @@ const CodeCellActionBar: React.FC<ActionBarProps> = ({ cell }) => {
 	});
 	return (
 		<ActionBarWrapper>
-			<div className="action-bar-start">{renderedTabs}</div>
+			<div className="action-bar-tabs">{renderedTabs}</div>
 			<ActionBarControls id={cell.id} type="code" />
 		</ActionBarWrapper>
 	);

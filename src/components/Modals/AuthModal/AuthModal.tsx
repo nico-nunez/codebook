@@ -3,8 +3,8 @@ import Login from './Login';
 import Register from './Register';
 import Modal, { ModalBody } from '../Modal/Modal';
 import { useState } from 'react';
-import { saveStore } from '../../utils';
-import { useTypedSelector } from '../../hooks';
+import { saveStore } from '../../../utils';
+import { useTypedSelector } from '../../../hooks';
 
 type ActiveFormState = 'login' | 'register';
 

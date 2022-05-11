@@ -1,9 +1,10 @@
 import './PageHeader.css';
 import PageName from './PageName';
-import { useActions } from '../../hooks';
 import HeaderButton from './PageHeaderBtn';
 import { useTypedSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
+import DeleteModal from '../Modals/DeleteModal';
+import { useActions, useToggle } from '../../hooks';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 
 interface PageHeaderProps {
@@ -11,21 +12,24 @@ interface PageHeaderProps {
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
-	const navigate = useNavigate();
-	const { newPage, displayModal, saveNewPage, saveExistingPage } = useActions();
+	const {
+		newPage,
+		displayModal,
+		saveNewPage,
+		saveExistingPage,
+		deleteSavedPage,
+	} = useActions();
+	const [showDeleteModal, setShowDeleteModal] = useToggle();
 	const page = useTypedSelector(({ page }) => page);
 	const auth = useTypedSelector(({ auth }) => auth);
-	const onImportPage = () => {
-		// TODO
-		displayModal('alert');
-	};
+	const navigate = useNavigate();
+	const isAuthor = auth.user && auth.user.id === page.user_id;
 
-	const onExportPage = () => {
-		//TODO
-		displayModal('alert');
+	const onDeletePage = () => {
+		deleteSavedPage(page.id as number, navigate);
+		setShowDeleteModal(false);
 	};
-
-	const onSavePage = () => {
+	const onSaveClick = () => {
 		if (!auth.isAuthenticated) {
 			displayModal('login');
 			return;
@@ -34,42 +38,45 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 			saveNewPage(navigate);
 			return;
 		}
-		if (auth.isAuthenticated && auth.user && auth.user.id === page.user_id) {
+		if (auth.isAuthenticated && isAuthor) {
 			saveExistingPage();
 		}
 	};
 	const onNewPage = () => {
 		newPage();
 	};
+
 	return (
 		<>
 			<ActionBarWrapper>
-				<div className="ms-2">
+				<div className="ms-2 action-bar-start">
 					<div className="action-bar-buttons">
 						<HeaderButton
-							text="Import"
-							onClick={onImportPage}
-							disabled={true}
+							text={isAuthor ? 'Save' : 'Save As'}
+							onClick={onSaveClick}
+							disabled={page.saved_changes}
 						/>
-						<HeaderButton
-							text="Export"
-							onClick={onExportPage}
-							disabled={true}
-						/>
+						{isAuthor && (
+							<HeaderButton
+								text="Delete"
+								onClick={() => setShowDeleteModal(true)}
+								className="is-danger delete-page-btn"
+							/>
+						)}
 					</div>
 				</div>
 				<PageName page_name={page_name} />
-				<div className="me-2">
+				<div className="me-2 action-bar-end">
 					<div className="action-bar-buttons">
-						<HeaderButton
-							text="Save"
-							onClick={onSavePage}
-							disabled={page.saved_changes}
-						/>
 						<HeaderButton text="New" onClick={onNewPage} />
 					</div>
 				</div>
 			</ActionBarWrapper>
+			<DeleteModal
+				active={showDeleteModal}
+				onConfirmClick={onDeletePage}
+				onCancelClick={() => setShowDeleteModal(false)}
+			/>
 		</>
 	);
 };

@@ -1,14 +1,19 @@
-.page-name {
+.page-header {
   position: relative;
+  display: flex;
+}
+
+.page-name {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .page-name i {
-  position: absolute;
-  bottom: 1px;
-  right: -35px;
+  margin:0 5px;
   padding: 5px;
   opacity: .7;
-  font-size: .8rem;
+  font-size: .75rem;
 }
 
 .page-name i:hover {
@@ -21,4 +26,8 @@
 
 .ms-2 {
   margin-left: 1.5rem;
+}
+
+.delete-page-btn {
+  opacity: .8;
 }

@@ -32,6 +32,11 @@ export interface SavePageAction {
 	payload: {};
 }
 
+export interface ResetPageAction {
+	type: PageActionType.RESET_PAGE;
+	payload: {};
+}
+
 export interface SetPageErrorAction {
 	type: PageActionType.SET_PAGE_ERROR;
 	payload: {
@@ -64,6 +69,7 @@ export type PageAction =
 	| UpdatePageNameAction
 	| UpdateSavedChangesAction
 	| SavePageAction
+	| ResetPageAction
 	| SetPageErrorAction
 	| ClearPageErrorAction;
 // | AddPageImport

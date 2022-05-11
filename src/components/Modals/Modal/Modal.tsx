@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { useActions, useTypedSelector } from '../../hooks';
+import { useActions, useTypedSelector } from '../../../hooks';
 
 // type HeaderProps = { title: string };
 
@@ -24,16 +24,18 @@ export const ModalFooter: React.FC = ({ children }) => {
 interface ModalProps {
 	name: string;
 	title: string | null;
+	active?: boolean;
 	content?: string;
 	confirmBtn?: boolean;
 	onConfirm?: () => void;
 	cancelBtn?: boolean;
-	onCancel?: () => {};
+	onCancel?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
 	name,
 	title,
+	active,
 	content,
 	confirmBtn = true,
 	onConfirm,
@@ -44,8 +46,8 @@ const Modal: React.FC<ModalProps> = ({
 	const { display, modalName } = useTypedSelector(({ modal }) => modal);
 	const { hideModal } = useActions();
 	const modalRoot = document.querySelector('#modal');
-	const isActive = display && modalName === name;
-	const onClick = () => {
+	const isActive = active || (display && modalName === name);
+	const onHideModal = () => {
 		hideModal();
 	};
 	const renderFooter = () => {
@@ -56,12 +58,15 @@ const Modal: React.FC<ModalProps> = ({
 				style={{ display: 'flex', justifyContent: 'end' }}
 			>
 				{confirmBtn && (
-					<button onClick={onConfirm} className="button cancel">
+					<button onClick={onConfirm} className="button cancel is-success">
 						Confirm
 					</button>
 				)}
 				{cancelBtn && (
-					<button onClick={onCancel || onClick} className="button cancel">
+					<button
+						onClick={onCancel || onHideModal}
+						className="button cancel is-danger"
+					>
 						Cancel
 					</button>
 				)}
@@ -71,20 +76,18 @@ const Modal: React.FC<ModalProps> = ({
 	if (modalRoot) {
 		return createPortal(
 			<div className={`modal ${isActive && 'is-active'}`}>
-				<div className="modal-background" onClick={onClick}></div>
+				<div
+					className="modal-background"
+					onClick={onCancel || onHideModal}
+				></div>
 				<div className="modal-card">
 					{title && (
 						<header className="modal-card-head">
-							<p
-								className="modal-card-title "
-								style={{ width: '90%', textAlign: 'center' }}
-							>
-								{title}
-							</p>
+							<p className="modal-card-title ">{title}</p>
 							<button
 								className="delete"
 								aria-label="close"
-								onClick={onClick}
+								onClick={onCancel || onHideModal}
 							></button>
 						</header>
 					)}

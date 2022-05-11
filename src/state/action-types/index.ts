@@ -13,6 +13,7 @@ export enum PageActionType {
 	UPDATE_SAVED_CHANGES = 'update_saved_changes',
 	SAVE_PAGE = 'save_page',
 	LOAD_PAGE = 'load_page',
+	RESET_PAGE = 'delete_saved_page',
 	SET_PAGE_ERROR = 'set_page_error',
 	CLEAR_PAGE_ERROR = 'clear_page_error',
 	// --- TODO ---

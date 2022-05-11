@@ -1,5 +1,4 @@
 import './Page.css';
-import CellItem from '../Cell/Cell';
 import { CellTypes } from '../../state';
 import { shallowEqual } from 'react-redux';
 import { Fragment, useEffect } from 'react';
@@ -7,13 +6,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTypedSelector, useActions } from '../../hooks';
 import PageHeader from '../PageHeader/PageHeader';
 import AddCell from '../Add-Cell/Add-Cell';
+import CellItem from '../Cell/Cell';
 
 const Page: React.FC = () => {
-	const { pageId } = useParams();
-	const navigate = useNavigate();
 	const { fetchPage, clearError } = useActions();
-	const page = useTypedSelector(({ page }) => page);
 	const order = useTypedSelector(({ cells }) => cells.order);
+	const page = useTypedSelector(({ page }) => page);
 	const cellTypes = useTypedSelector(({ cells }) => {
 		const types: { [key: number]: CellTypes } = {};
 		for (const id in cells.data) {
@@ -21,6 +19,8 @@ const Page: React.FC = () => {
 		}
 		return types;
 	}, shallowEqual);
+	const { pageId } = useParams();
+	const navigate = useNavigate();
 	let showCodeButton = true;
 	let showTextButton = true;
 	const renderedCells = order.map((cell_id) => {

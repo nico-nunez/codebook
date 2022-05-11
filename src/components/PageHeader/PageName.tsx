@@ -43,7 +43,7 @@ export const PageName: React.FC<PageNameProps> = ({ page_name }) => {
 		<div className="page-name">
 			<span className="is-size-4 ml-6">{page_name}</span>
 			<i
-				className={`fa-solid fa-${editing ? 'check' : 'pencil'}`}
+				className={`fa-solid fa-${!editing && 'pencil'}`}
 				onClick={() => setEditing(true)}
 			></i>
 		</div>

@@ -1,6 +1,6 @@
-import { useActions } from '../../hooks';
-import Form from '../Forms/Form';
-import FormField from '../Forms/FormField';
+import { useActions } from '../../../hooks';
+import Form from '../../Forms/Form';
+import FormField from '../../Forms/FormField';
 
 interface LoginInputs {
 	email: string;

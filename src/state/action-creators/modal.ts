@@ -1,6 +1,7 @@
 import { ModalActionType } from '../action-types';
+import { DisplayModalAction, HideModalAction } from '../actions';
 
-export const displayModal = (modalName: string) => {
+export const displayModal = (modalName: string): DisplayModalAction => {
 	return {
 		type: ModalActionType.DISPLAY_MODAL,
 		payload: {
@@ -9,7 +10,7 @@ export const displayModal = (modalName: string) => {
 	};
 };
 
-export const hideModal = () => {
+export const hideModal = (): HideModalAction => {
 	return {
 		type: ModalActionType.HIDE_MODAL,
 		payload: {},

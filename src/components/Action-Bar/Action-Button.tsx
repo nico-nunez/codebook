@@ -3,17 +3,19 @@ interface ActionButtonProps {
 	icon?: string;
 	text?: string;
 	active?: boolean;
+	className?: string;
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({
 	onClick,
 	icon,
 	text,
+	className,
 	active = false,
 }) => {
 	const renderedIcon = () => {
 		return (
-			<span className="icon">
+			<span className={`icon ${className}`}>
 				<i className={`fa-solid ${icon}`}></i>
 			</span>
 		);
