@@ -1,9 +1,9 @@
+import thunk from 'redux-thunk';
+import watch from 'redux-watch';
+import reducers from './reducers';
+import { PagesActionType } from './action-types';
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import reducers from './reducers';
-import watch from 'redux-watch';
-import { toggleSaved } from './helpers';
 
 const composeEnhancers = composeWithDevTools({});
 
@@ -22,8 +22,17 @@ export type MyStore = typeof store;
 
 const watchCells = watch(store.getState, 'cells');
 const watchTabs = watch(store.getState, 'tabs');
-const watchPage = watch(store.getState, 'page.page_name');
 
-store.subscribe(watchCells(toggleSaved(store)));
-store.subscribe(watchTabs(toggleSaved(store)));
-store.subscribe(watchPage(toggleSaved(store)));
+const toggleSaved = () => {
+	return () => {
+		const { pages } = store.getState();
+		if (pages.current.saved) {
+			store.dispatch({
+				type: PagesActionType.UPDATE_SAVED_STATUS,
+				payload: { saved: false },
+			});
+		}
+	};
+};
+store.subscribe(watchCells(toggleSaved()));
+store.subscribe(watchTabs(toggleSaved()));

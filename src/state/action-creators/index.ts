@@ -1,4 +1,4 @@
-export * from './page';
+export * from './pages';
 export * from './cells';
 export * from './tabs';
 export * from './bundles';

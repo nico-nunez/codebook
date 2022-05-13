@@ -2,14 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useActions } from '../../hooks';
 
 interface PageNameProps {
+	id: number | null;
 	page_name: string;
 }
 
-export const PageName: React.FC<PageNameProps> = ({ page_name }) => {
+export const PageName: React.FC<PageNameProps> = ({ page_name, id }) => {
 	const nameRef = useRef<HTMLSpanElement | null>(null);
 	const [editing, setEditing] = useState(false);
 	const { updatePageName } = useActions();
-
+	const onChangeName = (evt: React.ChangeEvent<HTMLInputElement>) => {
+		updatePageName(evt.target.value);
+	};
 	useEffect(() => {
 		const handleClick = (evt: MouseEvent) => {
 			if (
@@ -34,7 +37,7 @@ export const PageName: React.FC<PageNameProps> = ({ page_name }) => {
 				<input
 					className="input is-medium has-text-centered"
 					value={page_name}
-					onChange={(evt) => updatePageName(evt.target.value)}
+					onChange={onChangeName}
 				/>
 			</span>
 		);

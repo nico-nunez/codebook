@@ -3,15 +3,16 @@ import { CellTypes } from '../../state';
 import { shallowEqual } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useTypedSelector, useActions } from '../../hooks';
+import { useTypedSelector, useActions, useCurrentPage } from '../../hooks';
 import PageHeader from '../PageHeader/PageHeader';
 import AddCell from '../Add-Cell/Add-Cell';
 import CellItem from '../Cell/Cell';
 
 const Page: React.FC = () => {
-	const { fetchPage, clearError } = useActions();
+	const { fetchFullPage, clearError, addRecent } = useActions();
 	const order = useTypedSelector(({ cells }) => cells.order);
-	const page = useTypedSelector(({ page }) => page);
+	const page = useCurrentPage();
+	const error = useTypedSelector(({ pages: { error } }) => error);
 	const cellTypes = useTypedSelector(({ cells }) => {
 		const types: { [key: number]: CellTypes } = {};
 		for (const id in cells.data) {
@@ -39,22 +40,26 @@ const Page: React.FC = () => {
 		const handleDismissError = () => {
 			clearError();
 		};
-		if (page.error) window.addEventListener('click', handleDismissError, true);
+		if (error) window.addEventListener('click', handleDismissError, true);
 		return () => {
 			window.removeEventListener('click', handleDismissError);
 		};
-	}, [page.error, clearError, navigate]);
+	}, [error, clearError, navigate]);
 
 	// FETCH PAGE ON LOAD
 	useEffect(() => {
-		if (pageId) fetchPage(parseInt(pageId), navigate);
-	}, [pageId, fetchPage, navigate]);
+		const page_id = parseInt(pageId || '');
+		if (page_id && page_id !== page.id) {
+			fetchFullPage(page_id, navigate);
+			addRecent(page_id);
+		}
+	}, [pageId, page, fetchFullPage, navigate, addRecent]);
 
 	return (
 		<>
-			<PageHeader page_name={page.page_name} />
+			<PageHeader page_name={page ? page.page_name : 'Untitled'} />
 			<div className="cell-list">
-				{page.error && <div className="error-messages">{page.error}</div>}
+				{error && <div className="error-messages">{error}</div>}
 				{renderedCells}
 				{(showCodeButton || showTextButton) && (
 					<AddCell

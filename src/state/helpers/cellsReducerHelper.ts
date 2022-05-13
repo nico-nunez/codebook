@@ -19,7 +19,10 @@ export const initialCellsState: CellsState = {
 	data: {},
 };
 
-const createCell = (state: CellsState, action: CreateCellAction) => {
+export const createCell = (
+	state: CellsState,
+	action: CreateCellAction
+): CellsState => {
 	const { id, cell_type } = action.payload;
 	state.order.push(id);
 	const newCell = {
@@ -31,14 +34,20 @@ const createCell = (state: CellsState, action: CreateCellAction) => {
 	return state;
 };
 
-const loadCell = (state: CellsState, action: LoadCellAction) => {
+export const loadCell = (
+	state: CellsState,
+	action: LoadCellAction
+): CellsState => {
 	const cell: SavedCell = { ...action.payload };
 	state.order.push(cell.id);
 	state.data[cell.id] = cell;
 	return state;
 };
 
-const moveCell = (state: CellsState, action: MoveCellAction) => {
+export const moveCell = (
+	state: CellsState,
+	action: MoveCellAction
+): CellsState => {
 	const { id, direction } = action.payload;
 	const index = state.order.indexOf(id);
 	const targetIndex = direction === 'up' ? index - 1 : index + 1;
@@ -48,23 +57,21 @@ const moveCell = (state: CellsState, action: MoveCellAction) => {
 	return state;
 };
 
-const updateTextCell = (state: CellsState, action: UpdateCellAction) => {
+export const updateTextCell = (
+	state: CellsState,
+	action: UpdateCellAction
+): CellsState => {
 	const { id, content } = action.payload;
 	state.data[id].content = content;
 	return state;
 };
 
-const deleteCell = (state: CellsState, action: DeleteCellAction) => {
+export const deleteCell = (
+	state: CellsState,
+	action: DeleteCellAction
+): CellsState => {
 	const { id } = action.payload;
 	state.order = state.order.filter((cell_id) => cell_id !== id);
 	delete state.data[id];
 	return state;
-};
-
-export const cellsActions = {
-	createCell,
-	loadCell,
-	moveCell,
-	updateTextCell,
-	deleteCell,
 };

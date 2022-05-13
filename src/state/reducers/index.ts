@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import pageReducer from './pageReducer';
+import pagesReducer from './pagesReducer';
 import cellsReducer from './cellsReducer';
 import tabsReducer from './tabsReducer';
 import bundlesReducer from './bundlesReducer';
@@ -7,7 +7,7 @@ import authReducer from './aurthReducer';
 import modalReducer from './modalReducer';
 
 const reducers = combineReducers({
-	page: pageReducer,
+	pages: pagesReducer,
 	cells: cellsReducer,
 	tabs: tabsReducer,
 	bundles: bundlesReducer,

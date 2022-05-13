@@ -65,7 +65,7 @@ const moveTab = (state: TabsState, action: MoveTabAction) => {
 
 const updateTab = (state: TabsState, action: UpdateTabAction) => {
 	const { id, content } = action.payload;
-	state.data[id].content = content;
+	state.data[id].content = content || '';
 	return state;
 };
 

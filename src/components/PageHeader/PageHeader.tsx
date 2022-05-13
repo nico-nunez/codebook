@@ -1,10 +1,10 @@
 import './PageHeader.css';
 import PageName from './PageName';
 import HeaderButton from './PageHeaderBtn';
-import { useTypedSelector } from '../../hooks';
+import { useCurrentPage, useTypedSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../Modals/DeleteModal';
-import { useActions, useToggle } from '../../hooks';
+import { useActions, useToggle, useNewPage } from '../../hooks';
 import ActionBarWrapper from '../Action-Bar/Action-Bar-Wrapper';
 
 interface PageHeaderProps {
@@ -12,16 +12,12 @@ interface PageHeaderProps {
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
-	const {
-		newPage,
-		displayModal,
-		saveNewPage,
-		saveExistingPage,
-		deleteSavedPage,
-	} = useActions();
+	const { displayModal, saveNewPage, saveExistingPage, deleteSavedPage } =
+		useActions();
 	const [showDeleteModal, setShowDeleteModal] = useToggle();
-	const page = useTypedSelector(({ page }) => page);
+	const isSaved = useTypedSelector(({ pages: { current } }) => current.saved);
 	const auth = useTypedSelector(({ auth }) => auth);
+	const page = useCurrentPage();
 	const navigate = useNavigate();
 	const isAuthor = auth.user && auth.user.id === page.user_id;
 
@@ -42,9 +38,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 			saveExistingPage();
 		}
 	};
-	const onNewPage = () => {
-		newPage();
-	};
+	const onNewPage = useNewPage();
 
 	return (
 		<>
@@ -54,7 +48,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 						<HeaderButton
 							text={isAuthor ? 'Save' : 'Save As'}
 							onClick={onSaveClick}
-							disabled={page.saved_changes}
+							disabled={isSaved}
 						/>
 						{isAuthor && (
 							<HeaderButton
@@ -65,7 +59,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 						)}
 					</div>
 				</div>
-				<PageName page_name={page_name} />
+				<PageName page_name={page_name} id={page.id} />
 				<div className="me-2 action-bar-end">
 					<div className="action-bar-buttons">
 						<HeaderButton text="New" onClick={onNewPage} />

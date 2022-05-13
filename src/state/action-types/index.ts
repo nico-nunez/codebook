@@ -7,20 +7,6 @@ export enum CellActionType {
 	RESET_CELLS = 'reset_cells',
 }
 
-export enum PageActionType {
-	CREATE_PAGE = 'create_page',
-	UPDATE_PAGE_NAME = 'update_page_name',
-	UPDATE_SAVED_CHANGES = 'update_saved_changes',
-	SAVE_PAGE = 'save_page',
-	LOAD_PAGE = 'load_page',
-	RESET_PAGE = 'delete_saved_page',
-	SET_PAGE_ERROR = 'set_page_error',
-	CLEAR_PAGE_ERROR = 'clear_page_error',
-	// --- TODO ---
-	// REMOVE_PAGE_IMPORT = 'remove_page_import',
-	// ADD_PAGE_IMPORT = 'add_page_import',
-}
-
 export enum TabActionType {
 	CREATE_TAB = 'create_tab',
 	LOAD_TAB = 'load_tab',
@@ -50,4 +36,18 @@ export enum AuthActionType {
 export enum ModalActionType {
 	DISPLAY_MODAL = 'display_modal',
 	HIDE_MODAL = 'hide_modal',
+}
+
+export enum PagesActionType {
+	CREATE_PAGE = 'create_page',
+	SET_CURRENT_PAGE = 'set_current_page',
+	LOAD_SAVED_PAGE = 'load_saved_page',
+	LOAD_SAVED_PAGES = 'load_pages',
+	UPDATE_PAGE_NAME = 'update_page_name',
+	UPDATE_SAVED_STATUS = 'update_saved_status',
+	DELETE_PAGE = 'delete_page',
+	ADD_RECENT_PAGE = 'add_recent_page',
+	REMOVE_RECENT_PAGE = 'remove_recent_page',
+	SET_ERROR = 'set_error',
+	CLEAR_ERROR = 'clear_error',
 }
