@@ -16,6 +16,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 		useActions();
 	const [showDeleteModal, setShowDeleteModal] = useToggle();
 	const isSaved = useTypedSelector(({ pages: { current } }) => current.saved);
+	const loading = useTypedSelector(({ pages: { loading } }) => loading);
 	const auth = useTypedSelector(({ auth }) => auth);
 	const page = useCurrentPage();
 	const navigate = useNavigate();
@@ -46,6 +47,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 				<div className="ms-2 action-bar-start">
 					<div className="action-bar-buttons">
 						<HeaderButton
+							className={loading ? 'is-loading' : ''}
 							text={isAuthor ? 'Save' : 'Save As'}
 							onClick={onSaveClick}
 							disabled={isSaved}
@@ -54,12 +56,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({ page_name }) => {
 							<HeaderButton
 								text="Delete"
 								onClick={() => setShowDeleteModal(true)}
-								className="is-danger delete-page-btn"
+								className={`is-danger delete-page-btn ${
+									loading && 'is-loading'
+								}`}
 							/>
 						)}
 					</div>
 				</div>
-				<PageName page_name={page_name} id={page.id} />
+				<PageName page_name={page_name} />
 				<div className="me-2 action-bar-end">
 					<div className="action-bar-buttons">
 						<HeaderButton text="New" onClick={onNewPage} />

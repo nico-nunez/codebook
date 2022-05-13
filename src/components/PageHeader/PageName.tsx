@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useActions } from '../../hooks';
 
 interface PageNameProps {
-	id: number | null;
 	page_name: string;
 }
 
-export const PageName: React.FC<PageNameProps> = ({ page_name, id }) => {
+export const PageName: React.FC<PageNameProps> = ({ page_name }) => {
 	const nameRef = useRef<HTMLSpanElement | null>(null);
 	const [editing, setEditing] = useState(false);
 	const { updatePageName } = useActions();
@@ -26,20 +25,22 @@ export const PageName: React.FC<PageNameProps> = ({ page_name, id }) => {
 		};
 		document.addEventListener('click', handleClick, { capture: true });
 		return () => {
-			document.removeEventListener('click', handleClick, { capture: true });
+			document.removeEventListener('click', handleClick);
 		};
 	}, []);
 
 	if (!page_name && !editing) setEditing(true);
 	if (editing) {
 		return (
-			<span ref={nameRef}>
-				<input
-					className="input is-medium has-text-centered"
-					value={page_name}
-					onChange={onChangeName}
-				/>
-			</span>
+			<div className="page-name">
+				<span ref={nameRef}>
+					<input
+						className="input is-medium has-text-centered"
+						value={page_name}
+						onChange={onChangeName}
+					/>
+				</span>
+			</div>
 		);
 	}
 	return (

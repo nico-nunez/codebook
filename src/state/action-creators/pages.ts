@@ -114,7 +114,7 @@ export const saveExistingPage = () => {
 				cells,
 				tabs,
 			});
-			dispatch(updateSavedChanges(true));
+			dispatch(updateSavedStatus(true));
 		} catch (err: any) {
 			dispatch(setError(err.response.data.error.messages));
 		}
@@ -219,7 +219,7 @@ export const updatePageName = (page_name: string): UpdatePageNameAction => {
 };
 
 // UPDATE SAVED CHANGES
-export const updateSavedChanges = (saved: boolean): UpdateSavedStatusAction => {
+export const updateSavedStatus = (saved: boolean): UpdateSavedStatusAction => {
 	return {
 		type: PagesActionType.UPDATE_SAVED_STATUS,
 		payload: {
@@ -326,5 +326,5 @@ const loadFullPage = (
 	for (const tab of data.tabs) {
 		dispatch(loadTab(tab));
 	}
-	dispatch(updateSavedChanges(true));
+	dispatch(updateSavedStatus(true));
 };

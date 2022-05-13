@@ -93,3 +93,7 @@
 .py-4 {padding-top: 1rem; padding-bottom: 1rem;}
 .py-5 {padding-top: 1.5rem; padding-bottom: 1.5rem;}
 .py-6 {padding-top: 3rem; padding-bottom: 3rem;}
+
+time {
+  font-size: .9rem;
+}

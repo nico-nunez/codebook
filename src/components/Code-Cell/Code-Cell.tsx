@@ -16,7 +16,7 @@ export interface TabsData {
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-	const { createBundle, updateTab } = useActions();
+	const { createBundle, updateTab, updateSavedStatus } = useActions();
 	const tabsData = useTypedSelector(({ tabs }) => {
 		const tabsData = tabs.order.map((id) => tabs.data[id]);
 		return tabsData;
@@ -42,6 +42,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
 	const onInputChange = (value: string) => {
 		updateTab(tabId, value);
+		updateSavedStatus(false);
 	};
 	return (
 		<>
