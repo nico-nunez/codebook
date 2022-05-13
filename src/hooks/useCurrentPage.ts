@@ -5,5 +5,5 @@ export const useCurrentPage = (): Page => {
 	const page = useTypedSelector(({ pages }) => {
 		return pages.data[pages.current.id];
 	});
-	return page;
+	return page || {};
 };

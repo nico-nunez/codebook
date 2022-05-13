@@ -6,13 +6,13 @@ import axios, { AxiosResponse } from 'axios';
 import { loadCell, resetCells } from './cells';
 import { FullPage, SavedPage } from '../models';
 import { PagesActionType } from '../action-types';
-import { displayModal, hideModal } from './modal';
 import { NavigateFunction } from 'react-router-dom';
 import { ResetBundlesAction } from '../actions/bundleActions';
 import { LoadTabAction, ResetTabsAction } from '../actions/tabsActions';
 import { LoadCellAction, ResetCellsAction } from '../actions/cellsActions';
 import { DisplayModalAction, HideModalAction } from '../actions/modalActions';
 import {
+	SetPageLoadingAction,
 	CreatePageAction,
 	LoadSavedPageAction,
 	LoadSavedPagesAction,
@@ -27,6 +27,13 @@ import {
 } from '../actions/pagesActions';
 
 axios.defaults.withCredentials = true;
+
+export const setPageLoading = (): SetPageLoadingAction => {
+	return {
+		type: PagesActionType.SET_PAGE_LOADING,
+		payload: {},
+	};
+};
 
 export const createPage = (): CreatePageAction => {
 	return {
@@ -44,40 +51,19 @@ export const setCurrentPage = (id: number): SetCurrentPageAction => {
 	};
 };
 
-// // GENERATE NEW PAGE
-// type GenerateNewPageAction =
-// 	| CreatePageAction
-// 	| ResetCellsAction
-// 	| ResetTabsAction
-// 	| ResetBundlesAction;
-
-// export const newPage = () => {
-// 	return (dispatch: Dispatch<GenerateNewPageAction>) => {
-// 		dispatch(createPage());
-// 		dispatch(resetCells());
-// 		dispatch(resetTabs());
-// 		dispatch(resetBundles());
-// 	};
-// };
-
 // SAVE NEW PAGE
-type LoadFullPageAction =
-	| LoadSavedPageAction
-	| LoadCellAction
-	| LoadTabAction
+type SaveNewPageAction =
+	| SetPageLoadingAction
 	| DisplayModalAction
 	| HideModalAction
-	| UpdateSavedStatusAction
-	| ResetCellsAction
-	| ResetTabsAction
-	| SetErrorAction
-	| ResetBundlesAction;
+	| DeletePageAction
+	| SetErrorAction;
 
 export const saveNewPage = (navigate: NavigateFunction) => {
-	return async (dispatch: Dispatch<LoadFullPageAction>) => {
+	return async (dispatch: Dispatch<SaveNewPageAction>) => {
 		const state = store.getState();
 		try {
-			dispatch(displayModal('progressBar'));
+			dispatch(setPageLoading());
 			const { page_name } = state.pages.data[state.pages.current.id];
 			const cells = state.cells.order.map(
 				(cell_id) => state.cells.data[cell_id]
@@ -91,21 +77,24 @@ export const saveNewPage = (navigate: NavigateFunction) => {
 					tabs,
 				}
 			);
-			dispatch(hideModal());
 			navigate(`/pages/${data.id}`);
+			dispatch(deletePage(state.pages.current.id));
 		} catch (err: any) {
-			dispatch(hideModal());
 			dispatch(setError(err.response.data.error.messages));
 		}
 	};
 };
 
 // SAVE EXISTING PAGE
-type SaveExistingPageAction = UpdateSavedStatusAction | SetErrorAction;
+type SaveExistingPageAction =
+	| SetPageLoadingAction
+	| UpdateSavedStatusAction
+	| SetErrorAction;
 
 export const saveExistingPage = () => {
 	return async (dispatch: Dispatch<SaveExistingPageAction>) => {
 		try {
+			dispatch(setPageLoading());
 			const state = store.getState();
 			const { page_name } = state.pages.data[state.pages.current.id];
 			const cells = state.cells.order.map((id) => {
@@ -139,6 +128,7 @@ export const fetchFullPage = (
 ) => {
 	return async (dispatch: Dispatch<LoadFullPageAction>) => {
 		try {
+			dispatch(setPageLoading());
 			const { data }: AxiosResponse<FullPage> = await axios.get(
 				`/api/pages/${id}`
 			);
@@ -158,10 +148,15 @@ export const loadSavedPage = (page: SavedPage): LoadSavedPageAction => {
 	};
 };
 
+type FetchPagesAction =
+	| SetPageLoadingAction
+	| LoadSavedPagesAction
+	| SetErrorAction;
 // FETCH AND LOAD PAGES (PAGES ONLY)
 export const fetchPages = (page?: number, limit?: number) => {
-	return async (dispatch: Dispatch<LoadSavedPagesAction | SetErrorAction>) => {
+	return async (dispatch: Dispatch<FetchPagesAction>) => {
 		try {
+			dispatch(setPageLoading());
 			const { data }: AxiosResponse<SavedPage[]> = await axios.get(
 				'/api/pages',
 				{
@@ -189,13 +184,14 @@ export const loadSavedPages = (pages: SavedPage[]): LoadSavedPagesAction => {
 };
 
 // LOAD SAVED PAGES (MANY)
-export const loadUserPages = (
+export const fetchUserPages = (
 	userId: number,
 	limit?: number,
 	page?: number
 ) => {
-	return async (dispatch: Dispatch<LoadSavedPagesAction | SetErrorAction>) => {
+	return async (dispatch: Dispatch<FetchPagesAction>) => {
 		try {
+			dispatch(setPageLoading());
 			const { data }: AxiosResponse<SavedPage[]> = await axios.get(
 				`/api/users/${userId}/pages`,
 				{
@@ -244,6 +240,7 @@ export const deletePage = (id: number): DeletePageAction => {
 
 // DELETE SAVED PAGE
 type DeleteSavedPageAction =
+	| SetPageLoadingAction
 	| DeletePageAction
 	| CreatePageAction
 	| ResetBundlesAction
@@ -255,6 +252,7 @@ type DeleteSavedPageAction =
 export const deleteSavedPage = (id: number, navigate: NavigateFunction) => {
 	return async (dispatch: Dispatch<DeleteSavedPageAction>) => {
 		try {
+			dispatch(setPageLoading());
 			await axios.delete(`/api/pages/${id}`);
 			dispatch(deletePage(id));
 			dispatch(createPage());
@@ -268,6 +266,7 @@ export const deleteSavedPage = (id: number, navigate: NavigateFunction) => {
 	};
 };
 
+// ADD RECENT
 export const addRecent = (id: number): AddRecentPageAction => {
 	return {
 		type: PagesActionType.ADD_RECENT_PAGE,
@@ -275,6 +274,7 @@ export const addRecent = (id: number): AddRecentPageAction => {
 	};
 };
 
+// REMOVE RECENT
 export const removeRecent = (id: number): RemoveRecentPageAction => {
 	return {
 		type: PagesActionType.REMOVE_RECENT_PAGE,
@@ -299,6 +299,17 @@ export const clearError = (): ClearErrorAction => {
 		payload: {},
 	};
 };
+
+type LoadFullPageAction =
+	| SetPageLoadingAction
+	| ResetCellsAction
+	| ResetTabsAction
+	| ResetBundlesAction
+	| LoadSavedPageAction
+	| LoadCellAction
+	| LoadTabAction
+	| UpdateSavedStatusAction
+	| SetErrorAction;
 
 // LOAD FULL PAGE HELPER
 const loadFullPage = (

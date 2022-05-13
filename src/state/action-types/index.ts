@@ -39,6 +39,7 @@ export enum ModalActionType {
 }
 
 export enum PagesActionType {
+	SET_PAGE_LOADING = 'set_page_loading',
 	CREATE_PAGE = 'create_page',
 	SET_CURRENT_PAGE = 'set_current_page',
 	LOAD_SAVED_PAGE = 'load_saved_page',

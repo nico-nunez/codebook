@@ -1,6 +1,11 @@
 import { SavedPage } from '../models';
 import { PagesActionType } from '../action-types';
 
+export interface SetPageLoadingAction {
+	type: PagesActionType.SET_PAGE_LOADING;
+	payload: {};
+}
+
 export interface CreatePageAction {
 	type: PagesActionType.CREATE_PAGE;
 	payload: {};
@@ -69,6 +74,7 @@ export interface ClearErrorAction {
 }
 
 export type PagesAction =
+	| SetPageLoadingAction
 	| CreatePageAction
 	| SetCurrentPageAction
 	| LoadSavedPageAction
