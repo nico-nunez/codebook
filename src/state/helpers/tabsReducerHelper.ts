@@ -25,12 +25,15 @@ export const initialTabsState: TabsState = {
 
 const createTab = (state: TabsState, action: CreateTabAction) => {
 	const { cell_id, code_language } = action.payload;
-	const content =
-		code_language === 'javascript'
-			? `// Load files from unpkg.com:
-// import React from 'react'; // example
-`
-			: '';
+	let content = '';
+	if (code_language === 'javascript') {
+		content = `// Import js files from unpkg.com:
+// import React from 'react';`;
+	}
+	if (code_language === 'css') {
+		content = `/* Import css files from unpkg.com: */
+/* @import 'bulma'; */`;
+	}
 	const newTab: Tab = {
 		id: randomId(),
 		code_language,

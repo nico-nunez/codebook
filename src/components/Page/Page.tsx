@@ -7,6 +7,7 @@ import { useTypedSelector, useActions, useCurrentPage } from '../../hooks';
 import PageHeader from '../PageHeader/PageHeader';
 import AddCell from '../Add-Cell/Add-Cell';
 import CellItem from '../Cell/Cell';
+import { updateSavedStatus } from '../../state/action-creators';
 
 const Page: React.FC = () => {
 	const { fetchFullPage, clearError, addRecent } = useActions();
@@ -53,6 +54,9 @@ const Page: React.FC = () => {
 			fetchFullPage(page_id, navigate);
 			addRecent(page_id);
 		}
+		return () => {
+			updateSavedStatus(true);
+		};
 	}, [pageId, currentPage, fetchFullPage, navigate, addRecent]);
 
 	return (

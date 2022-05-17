@@ -11,6 +11,7 @@ export const fetchPlugin = (inputCode: string) => {
 		name: 'fetch-plugin',
 		setup(build: esbuild.PluginBuild) {
 			build.onLoad({ filter: /(^index\.js$)/ }, () => {
+				console.log('onload: index.js');
 				return {
 					loader: 'jsx',
 					contents: inputCode,
@@ -32,35 +33,37 @@ export const fetchPlugin = (inputCode: string) => {
 				return null;
 			});
 
-			build.onLoad({ filter: /.css$/ }, async (args: any) => {
-				const { data, request } = await axios.get(args.path);
-				const contents = `
-			    const styles = document.createElement('style');
-			    styles.innerText = \`${data}\`;
-			    document.head.appendChild(styles);
-			  `;
-
-				const result: esbuild.OnLoadResult = {
-					loader: 'jsx',
-					contents,
-					resolveDir: new URL('./', request.responseURL).pathname,
-				};
-				await fileCache.setItem(args.path, result);
-				return result;
-			});
-
 			build.onLoad({ filter: /.*/ }, async (args: any) => {
 				const { data, request } = await axios.get(args.path, {
 					withCredentials: false,
 				});
+				const loader = request.responseURL.match(/.css$/) ? 'css' : 'jsx';
 				const result: esbuild.OnLoadResult = {
-					loader: 'jsx',
+					loader,
 					contents: data,
 					resolveDir: new URL('./', request.responseURL).pathname,
 				};
 				await fileCache.setItem(args.path, result);
 				return result;
 			});
+
+			// build.onLoad({ filter: /.css$/ }, async (args: any) => {
+			// 	console.log('onload: .css');
+			// 	const { data, request } = await axios.get(args.path);
+			// 	const contents = `
+			//   const styles = document.createElement('style');
+			//   styles.innerText = \`${data}\';
+			//   document.head.appendChild(styles);
+			// `;
+
+			// 	const result: esbuild.OnLoadResult = {
+			// 		loader: 'jsx',
+			// 		contents,
+			// 		resolveDir: new URL('./', request.responseURL).pathname,
+			// 	};
+			// 	await fileCache.setItem(args.path, result);
+			// 	return result;
+			// });
 		},
 	};
 };

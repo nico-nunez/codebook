@@ -92,10 +92,12 @@ const reducer = produce(
 			case PagesActionType.ADD_RECENT_PAGE:
 				state.recent = state.recent.filter((id) => id !== action.payload.id);
 				state.recent.push(action.payload.id);
+				localStorage.setItem('codebook-recents', JSON.stringify(state.recent));
 				return state;
 
 			case PagesActionType.REMOVE_RECENT_PAGE:
 				state.recent = state.recent.filter((id) => id !== action.payload.id);
+				localStorage.setItem('codebook-recents', JSON.stringify(state.recent));
 				return state;
 
 			case PagesActionType.SET_ERROR:
