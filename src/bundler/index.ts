@@ -10,6 +10,7 @@ const bundler = async (rawCode: string, lang: EditorLanguages) => {
 	const entryPoint = {
 		javascript: ['index.js'],
 		css: ['index.css'],
+		html: ['index.html]'],
 	};
 
 	try {

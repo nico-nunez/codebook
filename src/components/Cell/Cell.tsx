@@ -1,11 +1,12 @@
 import './Cell.css';
+import { Id } from '../../state';
 import TextCell from '../Text-Cell/Text-Cell';
 import CodeCell from '../Code-Cell/Code-Cell';
 import { useTypedSelector } from '../../hooks';
 import CodeCellActionBar from '../Code-Cell/Code-Cell-Action-Bar';
 
 interface CellItemProps {
-	id: number;
+	id: Id;
 }
 
 const CellItem: React.FC<CellItemProps> = ({ id }) => {

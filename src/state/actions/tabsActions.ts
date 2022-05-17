@@ -1,13 +1,13 @@
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 import { TabActionType } from '../action-types';
-import { SavedTab } from '../models';
+import { SavedTab, Id } from '../models';
 
 export type TabDirection = 'left' | 'right';
 
 export interface CreateTabAction {
 	type: TabActionType.CREATE_TAB;
 	payload: {
-		cell_id: number;
+		cell_id: Id;
 		code_language: EditorLanguages;
 	};
 }
@@ -20,7 +20,7 @@ export interface LoadTabAction {
 export interface MoveTabAction {
 	type: TabActionType.MOVE_TAB;
 	payload: {
-		id: number;
+		id: Id;
 		direction: TabDirection;
 	};
 }
@@ -28,7 +28,7 @@ export interface MoveTabAction {
 export interface UpdateTabAction {
 	type: TabActionType.UPDATE_TAB;
 	payload: {
-		id: number;
+		id: Id;
 		content: string;
 	};
 }
@@ -36,15 +36,14 @@ export interface UpdateTabAction {
 export interface DeleteTabAction {
 	type: TabActionType.DELETE_TAB;
 	payload: {
-		id: number;
+		id: Id;
 	};
 }
 
 export interface UpdateActiveTabAction {
 	type: TabActionType.UPDATE_ACTIVE_TAB;
 	payload: {
-		cell_id: number;
-		tab_id: number | null;
+		tab_id: Id | null;
 	};
 }
 

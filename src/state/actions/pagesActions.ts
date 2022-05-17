@@ -1,4 +1,4 @@
-import { SavedPage } from '../models';
+import { SavedPage, Id } from '../models';
 import { PagesActionType } from '../action-types';
 
 export interface SetPageLoadingAction {
@@ -13,7 +13,7 @@ export interface CreatePageAction {
 
 export interface SetCurrentPageAction {
 	type: PagesActionType.SET_CURRENT_PAGE;
-	payload: { id: number };
+	payload: { id: Id };
 }
 
 export interface LoadSavedPageAction {
@@ -47,7 +47,7 @@ export interface UpdateSavedStatusAction {
 export interface DeletePageAction {
 	type: PagesActionType.DELETE_PAGE;
 	payload: {
-		id: number;
+		id: Id;
 	};
 }
 

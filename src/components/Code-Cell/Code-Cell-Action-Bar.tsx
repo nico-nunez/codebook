@@ -11,8 +11,7 @@ interface ActionBarProps {
 
 const CodeCellActionBar: React.FC<ActionBarProps> = ({ cell }) => {
 	const order = useTypedSelector(({ tabs }) => tabs.order);
-	const activeTab =
-		useTypedSelector(({ tabs }) => tabs.active[cell.id]) || order[0];
+	const activeTab = useTypedSelector(({ tabs }) => tabs.active || order[0]);
 	const tabLangs = useTypedSelector(
 		({ tabs }) => order.map((id) => tabs.data[id].code_language),
 		shallowEqual
@@ -20,7 +19,6 @@ const CodeCellActionBar: React.FC<ActionBarProps> = ({ cell }) => {
 	const renderedTabs = order.map((id, i) => {
 		return (
 			<ActionBarTab
-				cell_id={cell.id}
 				tab_id={id}
 				code_langauge={tabLangs[i]}
 				isActive={activeTab === id}
@@ -31,7 +29,7 @@ const CodeCellActionBar: React.FC<ActionBarProps> = ({ cell }) => {
 	return (
 		<ActionBarWrapper>
 			<div className="action-bar-tabs">{renderedTabs}</div>
-			<ActionBarControls id={cell.id} type="code" />
+			<ActionBarControls id={cell.id} />
 		</ActionBarWrapper>
 	);
 };

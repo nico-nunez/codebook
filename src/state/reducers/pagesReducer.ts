@@ -2,18 +2,18 @@ import produce from 'immer';
 import { PagesActionType } from '../action-types';
 import { PagesAction } from '../actions';
 import { randomId } from '../helpers';
-import { Page } from '../models';
+import { Page, Id } from '../models';
 
 interface PagesState {
 	loading: boolean;
 	error: string | null;
 	recent: number[];
 	current: {
-		id: number;
+		id: Id;
 		saved: boolean;
 	};
 	data: {
-		[key: number]: Page;
+		[key: Id]: Page;
 	};
 }
 

@@ -1,11 +1,12 @@
+import { Id } from '../models';
 import { Dispatch } from 'redux';
+import bundle from '../../bundler';
 import { BundleActionType } from '../action-types';
 import { BundleAction, ResetBundlesAction } from '../actions';
-import bundle from '../../bundler';
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 
 export const createBundle = (
-	cell_id: number,
+	cell_id: Id,
 	code_language: EditorLanguages,
 	input: string
 ) => {

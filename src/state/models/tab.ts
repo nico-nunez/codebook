@@ -1,11 +1,24 @@
+import { Id } from './page';
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 
-export interface Tab {
-	id: number;
-	cell_id: number;
+interface BaseTab {
 	code_language: EditorLanguages;
 	content: string | null;
 }
+
+export interface TempTab extends BaseTab {
+	id: string;
+	cell_id: Id;
+}
+
+export interface SavedTab extends BaseTab {
+	id: number;
+	cell_id: number;
+	created_at: Date;
+	updated_at: Date;
+}
+
+export type Tab = TempTab | SavedTab;
 
 export const initialContent = {
 	javascript: `// Auto import npm packages:

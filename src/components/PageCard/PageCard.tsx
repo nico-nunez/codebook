@@ -1,37 +1,56 @@
 import { Link } from 'react-router-dom';
+import { useActions, useToggle } from '../../hooks';
 import { SavedPage } from '../../state';
+import DeleteModal from '../Modals/DeleteModal';
 
 interface PageCardProps {
-	page?: SavedPage;
+	page: SavedPage;
+	author?: boolean;
 }
 
-const PageCard: React.FC<PageCardProps> = ({ page }) => {
+const PageCard: React.FC<PageCardProps> = ({ page, author = true }) => {
+	const { deleteSavedPage } = useActions();
+	const [showModal, setShowModal] = useToggle();
+
 	return (
 		<div className="card">
 			<div className="card-content">
 				<div className="content">
-					<p className="title is-4">{page?.page_name || 'Page_Name'}</p>
-					<p className="subtitle is-6">Author: {'Profile Name'}</p>
-					<time dateTime="2016-1-1" className="is-block">
-						Created: {page?.created_at || new Date().toLocaleDateString()}
-					</time>
-					<time dateTime="2016-1-1" className="is-block">
-						Updated: {page?.updated_at || new Date().toLocaleDateString()}
-					</time>
+					<div>
+						<p className="title is-4">{page.page_name}</p>
+						<p className="subtitle is-6">
+							{author && `Author: ${page.author}`}
+						</p>
+					</div>
+					<div className="pt-2 has-text-muted">
+						<time dateTime="2016-1-1">
+							Created: {new Date(page.created_at).toDateString() || ''}
+						</time>
+						<time dateTime="2016-1-1" className="is-block">
+							Updated: {new Date(page.updated_at).toDateString() || ''}
+						</time>
+					</div>
 				</div>
 			</div>
 			<footer className="card-footer">
-				<Link to={`/pages/${page?.id}`} className="card-footer-item">
+				<Link to={`/pages/${page.id}`} className="card-footer-item">
 					View
 				</Link>
-				<a
-					href="#"
-					className="card-footer-item"
+				<span
+					className="card-footer-item is-clickable"
+					onClick={() => setShowModal(true)}
 					style={{ backgroundColor: '#d64742aa' }}
 				>
 					Delete
-				</a>
+				</span>
 			</footer>
+			{showModal && (
+				<DeleteModal
+					active={showModal}
+					onConfirmClick={() => deleteSavedPage(page.id)}
+					onCancelClick={() => setShowModal(false)}
+				/>
+			)}
 		</div>
 	);
 };

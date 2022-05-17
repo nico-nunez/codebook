@@ -1,19 +1,24 @@
 import { SavedCell } from './cell';
 import { SavedTab } from './tab';
 
-export interface Page {
-	id: number;
+export type Id = string | number;
+
+export interface TempPage {
+	id: string;
 	page_name: string;
+	user_id?: number;
+	author?: string;
 	created_at?: Date;
 	updated_at?: Date;
-	user_id?: number;
 }
+
 export interface SavedPage {
 	id: number;
 	page_name: string;
+	user_id: number;
+	author: string;
 	created_at: Date;
 	updated_at: Date;
-	user_id: number;
 }
 
 export interface FullPage {
@@ -21,3 +26,5 @@ export interface FullPage {
 	cells: SavedCell[];
 	tabs: SavedTab[];
 }
+
+export type Page = TempPage | SavedPage;

@@ -1,15 +1,14 @@
 import React from 'react';
+import { Id } from '../../state';
 import { useActions } from '../../hooks';
 
 interface ActionBarTabProps {
-	tab_id: number;
+	tab_id: Id;
 	code_langauge: string;
 	isActive: boolean;
-	cell_id: number;
 }
 
 export const ActionBarTab: React.FC<ActionBarTabProps> = ({
-	cell_id,
 	tab_id,
 	code_langauge,
 	isActive,
@@ -18,7 +17,7 @@ export const ActionBarTab: React.FC<ActionBarTabProps> = ({
 	return (
 		<div
 			className={`action-bar-tab ${isActive && 'active'}`}
-			onClick={() => updateActiveTab(cell_id, tab_id)}
+			onClick={() => updateActiveTab(tab_id)}
 		>
 			<span>{code_langauge}</span>
 		</div>

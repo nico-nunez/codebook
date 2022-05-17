@@ -1,4 +1,4 @@
-import { SavedTab, Tab } from '../models';
+import { SavedTab, Tab, Id } from '../models';
 import { randomId } from '../helpers';
 import {
 	CreateTabAction,
@@ -10,18 +10,16 @@ import {
 } from '../actions';
 
 export interface TabsState {
-	order: number[];
-	active: {
-		[key: number]: number | null; // -> cell_id: tab_id
-	};
+	order: Id[];
+	active: Id | null;
 	data: {
-		[key: number]: Tab;
+		[key: Id]: Tab;
 	};
 }
 
 export const initialTabsState: TabsState = {
 	order: [],
-	active: {},
+	active: null,
 	data: {},
 };
 
@@ -39,6 +37,7 @@ const createTab = (state: TabsState, action: CreateTabAction) => {
 		content,
 		cell_id,
 	};
+	state.active = state.active || newTab.id;
 	state.order.push(newTab.id);
 	state.data[newTab.id] = newTab;
 	return state;
@@ -70,8 +69,8 @@ const updateTab = (state: TabsState, action: UpdateTabAction) => {
 };
 
 const updateActiveTab = (state: TabsState, action: UpdateActiveTabAction) => {
-	const { cell_id, tab_id } = action.payload;
-	state.active[cell_id] = tab_id || state.order[0];
+	const { tab_id } = action.payload;
+	state.active = tab_id || state.order[0];
 	return state;
 };
 

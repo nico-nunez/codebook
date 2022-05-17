@@ -1,6 +1,5 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { useActions, useTypedSelector } from '../../../hooks';
 
 // type HeaderProps = { title: string };
 
@@ -43,13 +42,8 @@ const Modal: React.FC<ModalProps> = ({
 	onCancel,
 	children,
 }) => {
-	const { display, modalName } = useTypedSelector(({ modal }) => modal);
-	const { hideModal } = useActions();
 	const modalRoot = document.querySelector('#modal');
-	const isActive = active || (display && modalName === name);
-	const onHideModal = () => {
-		hideModal();
-	};
+	const isActive = active;
 	const renderFooter = () => {
 		if (!confirmBtn && !cancelBtn) return;
 		return (
@@ -63,10 +57,7 @@ const Modal: React.FC<ModalProps> = ({
 					</button>
 				)}
 				{cancelBtn && (
-					<button
-						onClick={onCancel || onHideModal}
-						className="button cancel is-danger"
-					>
+					<button onClick={onCancel} className="button cancel is-danger">
 						Cancel
 					</button>
 				)}
@@ -76,10 +67,7 @@ const Modal: React.FC<ModalProps> = ({
 	if (modalRoot) {
 		return createPortal(
 			<div className={`modal ${isActive && 'is-active'}`}>
-				<div
-					className="modal-background"
-					onClick={onCancel || onHideModal}
-				></div>
+				<div className="modal-background" onClick={onCancel}></div>
 				<div className="modal-card">
 					{title && (
 						<header className="modal-card-head">
@@ -87,7 +75,7 @@ const Modal: React.FC<ModalProps> = ({
 							<button
 								className="delete"
 								aria-label="close"
-								onClick={onCancel || onHideModal}
+								onClick={onCancel}
 							></button>
 						</header>
 					)}

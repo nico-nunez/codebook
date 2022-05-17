@@ -1,12 +1,13 @@
 import { CellActionType } from '../action-types';
-import { CellTypes, SavedCell } from '../models';
+import { CellTypes, SavedCell, Id, CellUpdate } from '../models';
 
 export type CellDirection = 'up' | 'down';
 
 export interface CreateCellAction {
 	type: CellActionType.CREATE_CELL;
 	payload: {
-		id: number;
+		id?: string;
+		page_id: Id;
 		cell_type: CellTypes;
 	};
 }
@@ -19,7 +20,7 @@ export interface LoadCellAction {
 export interface MoveCellAction {
 	type: CellActionType.MOVE_CELL;
 	payload: {
-		id: number;
+		id: Id;
 		direction: CellDirection;
 	};
 }
@@ -27,15 +28,15 @@ export interface MoveCellAction {
 export interface UpdateCellAction {
 	type: CellActionType.UPDATE_CELL;
 	payload: {
-		id: number;
-		content: string | null;
+		id: Id;
+		data: CellUpdate;
 	};
 }
 
 export interface DeleteCellAction {
 	type: CellActionType.DELETE_CELL;
 	payload: {
-		id: number;
+		id: Id;
 	};
 }
 

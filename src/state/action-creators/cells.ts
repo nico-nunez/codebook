@@ -1,7 +1,7 @@
-import { store } from '../store';
 import { Dispatch } from 'redux';
-import { CellTypes, SavedCell } from '../models';
 import { randomId } from '../helpers';
+import axios from 'axios';
+import { Cell, CellUpdate, CellTypes, SavedCell, Id } from '../models';
 import { CellActionType, TabActionType } from '../action-types';
 import { editorLangs } from '../../components/Code-Editor/code-editor';
 import { UpdateActiveTabAction, CreateTabAction } from '../actions/tabsActions';
@@ -14,19 +14,22 @@ import {
 	ResetCellsAction,
 	CellDirection,
 } from '../actions/cellsActions';
+import { SetErrorAction } from '../actions';
+import { setError } from './pages';
 
 type NewCellDispatch =
 	| CreateCellAction
 	| CreateTabAction
 	| UpdateActiveTabAction;
 
-export const createCell = (cell_type: CellTypes) => {
+export const createCell = (page_id: Id, cell_type: CellTypes) => {
 	return (dispatch: Dispatch<NewCellDispatch>) => {
 		const cell_id = randomId();
 		dispatch({
 			type: CellActionType.CREATE_CELL,
 			payload: {
 				id: cell_id,
+				page_id,
 				cell_type,
 			},
 		});
@@ -41,10 +44,6 @@ export const createCell = (cell_type: CellTypes) => {
 					},
 				});
 			}
-			dispatch({
-				type: TabActionType.UPDATE_ACTIVE_TAB,
-				payload: { cell_id, tab_id: null },
-			});
 		}
 	};
 };
@@ -56,10 +55,7 @@ export const loadCell = (data: SavedCell): LoadCellAction => {
 	};
 };
 
-export const moveCell = (
-	id: number,
-	direction: CellDirection
-): MoveCellAction => {
+export const moveCell = (id: Id, direction: CellDirection): MoveCellAction => {
 	return {
 		type: CellActionType.MOVE_CELL,
 		payload: {
@@ -70,24 +66,31 @@ export const moveCell = (
 };
 
 export const updateCell = (
-	id: number,
-	content: string
+	id: Id,
+	data: CellUpdate
 ): UpdateCellAction | void => {
-	const { cells } = store.getState();
-	if (cells.data[id].cell_type === 'text')
-		return {
-			type: CellActionType.UPDATE_CELL,
-			payload: {
-				id,
-				content,
-			},
-		};
+	return {
+		type: CellActionType.UPDATE_CELL,
+		payload: {
+			id,
+			data,
+		},
+	};
 };
 
-export const deleteCell = (id: number, type: CellTypes): DeleteCellAction => {
-	return {
-		type: CellActionType.DELETE_CELL,
-		payload: { id },
+export const deleteCell = (cell: Cell) => {
+	return async (dispatch: Dispatch<DeleteCellAction | SetErrorAction>) => {
+		try {
+			dispatch({
+				type: CellActionType.DELETE_CELL,
+				payload: { id: cell.id },
+			});
+			if (typeof cell.id === 'number') {
+				await axios.delete(`/api/cells/${cell.id}`);
+			}
+		} catch (err: any) {
+			dispatch(setError(err.response.data.error.messages));
+		}
 	};
 };
 

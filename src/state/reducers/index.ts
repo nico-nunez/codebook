@@ -4,7 +4,6 @@ import cellsReducer from './cellsReducer';
 import tabsReducer from './tabsReducer';
 import bundlesReducer from './bundlesReducer';
 import authReducer from './aurthReducer';
-import modalReducer from './modalReducer';
 
 const reducers = combineReducers({
 	pages: pagesReducer,
@@ -12,7 +11,6 @@ const reducers = combineReducers({
 	tabs: tabsReducer,
 	bundles: bundlesReducer,
 	auth: authReducer,
-	modal: modalReducer,
 });
 
 export default reducers;

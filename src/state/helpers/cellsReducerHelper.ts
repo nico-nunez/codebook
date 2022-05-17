@@ -1,4 +1,5 @@
-import { Cell, SavedCell } from '../models';
+import { randomId } from './randomId';
+import { Cell, SavedCell, Id, TempCell } from '../models';
 import {
 	CreateCellAction,
 	LoadCellAction,
@@ -8,9 +9,9 @@ import {
 } from '../actions';
 
 export interface CellsState {
-	order: number[];
+	order: Id[];
 	data: {
-		[key: number]: Cell;
+		[key: Id]: Cell;
 	};
 }
 
@@ -23,10 +24,12 @@ export const createCell = (
 	state: CellsState,
 	action: CreateCellAction
 ): CellsState => {
-	const { id, cell_type } = action.payload;
+	const { page_id, cell_type } = action.payload;
+	const id = randomId();
 	state.order.push(id);
-	const newCell = {
+	const newCell: TempCell = {
 		id,
+		page_id,
 		cell_type,
 		content: null,
 	};
@@ -57,12 +60,12 @@ export const moveCell = (
 	return state;
 };
 
-export const updateTextCell = (
+export const updateCell = (
 	state: CellsState,
 	action: UpdateCellAction
 ): CellsState => {
-	const { id, content } = action.payload;
-	state.data[id].content = content;
+	const { id, data } = action.payload;
+	state.data[id] = { ...state.data[id], ...(data as Cell) };
 	return state;
 };
 

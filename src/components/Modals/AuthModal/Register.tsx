@@ -2,6 +2,10 @@ import { useActions } from '../../../hooks';
 import Form from '../../Forms/Form';
 import FormField from '../../Forms/FormField';
 
+interface RegisterProps {
+	onClose: () => void;
+}
+
 interface RegisterInputs {
 	email: string;
 	password: string;
@@ -9,10 +13,11 @@ interface RegisterInputs {
 	profile_name: string;
 }
 
-const Register = () => {
+const Register: React.FC<RegisterProps> = ({ onClose }) => {
 	const { registerUser } = useActions();
 	const onSubmitForm = (inputs: {}) => {
 		registerUser({ ...(inputs as RegisterInputs) });
+		onClose();
 	};
 	return (
 		<>

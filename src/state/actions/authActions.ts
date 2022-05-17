@@ -11,19 +11,6 @@ export interface RegisterUserAction {
 	};
 }
 
-export interface LocalLoginAction {
-	type: AuthActionType.LOCAL_LOGIN;
-	payload: {
-		email: string;
-		password: string;
-	};
-}
-
-export interface LogoutUserAction {
-	type: AuthActionType.LOGOUT_USER;
-	payload: {};
-}
-
 export interface LogoutSuccessAction {
 	type: AuthActionType.LOGOUT_SUCCESS;
 	payload: {};
@@ -50,8 +37,6 @@ export interface AuthenticateSessionAction {
 
 export type AuthAction =
 	| RegisterUserAction
-	| LocalLoginAction
-	| LogoutUserAction
 	| LogoutSuccessAction
 	| AuthSuccessAction
 	| AuthFailureAction;

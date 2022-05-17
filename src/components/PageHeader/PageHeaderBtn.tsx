@@ -13,7 +13,7 @@ const PageHeaderBtn: React.FC<PageHeaderBtnProps> = ({
 }) => {
 	return (
 		<button
-			className={`button is-small is-rounded ${className}`}
+			className={`button is-small is-rounded ${className} action-bar-button`}
 			onClick={onClick}
 			disabled={disabled}
 		>

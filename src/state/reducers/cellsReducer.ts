@@ -8,7 +8,7 @@ import {
 	loadCell,
 	moveCell,
 	deleteCell,
-	updateTextCell,
+	updateCell,
 } from '../helpers';
 
 const reducer = produce(
@@ -27,7 +27,7 @@ const reducer = produce(
 				return deleteCell(state, action);
 
 			case CellActionType.UPDATE_CELL:
-				return updateTextCell(state, action);
+				return updateCell(state, action);
 
 			case CellActionType.RESET_CELLS:
 				state = initialCellsState;

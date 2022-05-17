@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { Id } from '../models';
 import { BundleAction } from '../actions';
 import { BundleActionType } from '../action-types';
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
@@ -13,8 +14,7 @@ export type CodeBundle = {
 };
 
 export type BundleState = {
-	// Cell ID
-	[key: string]: CodeBundle;
+	[key: Id]: CodeBundle;
 };
 
 const initialState: BundleState = {};

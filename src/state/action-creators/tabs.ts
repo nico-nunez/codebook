@@ -1,6 +1,6 @@
 import { EditorLanguages } from '../../components/Code-Editor/code-editor';
 import { TabActionType } from '../action-types';
-import { SavedTab } from '../models';
+import { SavedTab, Id } from '../models';
 import {
 	CreateTabAction,
 	LoadTabAction,
@@ -13,9 +13,8 @@ import {
 } from '../actions/tabsActions';
 
 export const createTab = (
-	cell_id: number,
-	code_language: EditorLanguages,
-	content: string | null
+	cell_id: Id,
+	code_language: EditorLanguages
 ): CreateTabAction => {
 	return {
 		type: TabActionType.CREATE_TAB,
@@ -33,7 +32,7 @@ export const loadTab = (data: SavedTab): LoadTabAction => {
 	};
 };
 
-export const moveTab = (id: number, direction: TabDirection): MoveTabAction => {
+export const moveTab = (id: Id, direction: TabDirection): MoveTabAction => {
 	return {
 		type: TabActionType.MOVE_TAB,
 		payload: {
@@ -43,7 +42,7 @@ export const moveTab = (id: number, direction: TabDirection): MoveTabAction => {
 	};
 };
 
-export const updateTab = (id: number, content: string): UpdateTabAction => {
+export const updateTab = (id: Id, content: string): UpdateTabAction => {
 	return {
 		type: TabActionType.UPDATE_TAB,
 		payload: {
@@ -53,19 +52,15 @@ export const updateTab = (id: number, content: string): UpdateTabAction => {
 	};
 };
 
-export const updateActiveTab = (
-	cell_id: number,
-	tab_id: number | null
-): UpdateActiveTabAction => {
+export const updateActiveTab = (tab_id: Id | null): UpdateActiveTabAction => {
 	return {
 		type: TabActionType.UPDATE_ACTIVE_TAB,
 		payload: {
-			cell_id,
 			tab_id,
 		},
 	};
 };
-export const deleteTab = (id: number): DeleteTabAction => {
+export const deleteTab = (id: Id): DeleteTabAction => {
 	return {
 		type: TabActionType.DELETE_TAB,
 		payload: {

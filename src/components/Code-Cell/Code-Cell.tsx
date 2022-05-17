@@ -21,8 +21,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 		const tabsData = tabs.order.map((id) => tabs.data[id]);
 		return tabsData;
 	});
-	const activeTab =
-		useTypedSelector(({ tabs }) => tabs.active[cell.id]) || tabsData[0];
+	const activeTab = useTypedSelector(({ tabs }) => tabs.active) || tabsData[0];
 	const bundle = useTypedSelector(({ bundles }) => bundles[cell.id]);
 	const {
 		id: tabId,

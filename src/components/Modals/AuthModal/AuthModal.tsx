@@ -8,7 +8,12 @@ import { useTypedSelector } from '../../../hooks';
 
 type ActiveFormState = 'login' | 'register';
 
-const AuthModal = () => {
+interface AuthModalProps {
+	active: boolean;
+	onCancel: () => void;
+}
+
+const AuthModal: React.FC<AuthModalProps> = ({ active, onCancel }) => {
 	const [activeForm, setActiveForm] = useState<ActiveFormState>('login');
 	const errors = useTypedSelector(({ auth }) => auth.errors);
 	const onGoogleClick = () => {
@@ -28,10 +33,12 @@ const AuthModal = () => {
 	});
 	return (
 		<Modal
+			active={active}
 			name="login"
 			title={'Please login to continue:'}
 			confirmBtn={false}
 			cancelBtn={false}
+			onCancel={onCancel}
 		>
 			<ModalBody>
 				<main className="card-body-container">
@@ -56,7 +63,11 @@ const AuthModal = () => {
 					<section className="card-body-section">
 						<div className="error-messages">{renderedErrors}</div>
 						<div className="section-form">
-							{activeForm === 'register' ? <Register /> : <Login />}
+							{activeForm === 'register' ? (
+								<Register onClose={onCancel} />
+							) : (
+								<Login onClose={onCancel} />
+							)}
 							<button
 								type="submit"
 								form={activeForm}

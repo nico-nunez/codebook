@@ -1,4 +1,3 @@
-import { useTypedSelector } from '../../hooks';
 import Modal from './Modal/Modal';
 
 const ProgressBarModal = () => {

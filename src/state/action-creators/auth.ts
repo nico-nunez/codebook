@@ -1,9 +1,13 @@
 import { Dispatch } from 'redux';
-import axios, { AxiosResponse } from 'axios';
-import { AuthActionType, ModalActionType } from '../action-types';
-import { AuthAction } from '../actions/authActions';
-import { ModalAction } from '../actions/modalActions';
 import { User } from '../models';
+import axios, { AxiosResponse } from 'axios';
+import { AuthActionType } from '../action-types';
+import {
+	AuthAction,
+	AuthSuccessAction,
+	AuthFailureAction,
+	LogoutSuccessAction,
+} from '../actions/authActions';
 
 interface Registration {
 	profile_name: string;
@@ -19,8 +23,33 @@ interface UserLogin {
 
 axios.defaults.withCredentials = true;
 
+export const authSuccess = (user: User): AuthSuccessAction => {
+	return {
+		type: AuthActionType.AUTH_SUCCESS,
+		payload: {
+			user,
+		},
+	};
+};
+
+export const authFailure = (errors: string[] | null): AuthFailureAction => {
+	return {
+		type: AuthActionType.AUTH_FAILURE,
+		payload: {
+			errors,
+		},
+	};
+};
+
+export const logoutSuccess = (): LogoutSuccessAction => {
+	return {
+		type: AuthActionType.LOGOUT_SUCCESS,
+		payload: {},
+	};
+};
+
 export const registerUser = (userData: Registration) => {
-	return async (dispatch: Dispatch<AuthAction | ModalAction>) => {
+	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			const { data }: AxiosResponse<User> = await axios.post(
 				'/api/auth/register',
@@ -28,29 +57,15 @@ export const registerUser = (userData: Registration) => {
 					...userData,
 				}
 			);
-			dispatch({
-				type: AuthActionType.AUTH_SUCCESS,
-				payload: {
-					user: data,
-				},
-			});
-			dispatch({
-				type: ModalActionType.HIDE_MODAL,
-				payload: {},
-			});
+			dispatch(authSuccess(data));
 		} catch (err: any) {
-			dispatch({
-				type: AuthActionType.AUTH_FAILURE,
-				payload: {
-					errors: err.response.data.error.messages,
-				},
-			});
+			dispatch(authFailure(err.response.data.error.messages));
 		}
 	};
 };
 
 export const loginUser = (loginData: UserLogin) => {
-	return async (dispatch: Dispatch<AuthAction | ModalAction>) => {
+	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			const { data }: AxiosResponse<User> = await axios.post(
 				'/api/auth/login',
@@ -58,24 +73,9 @@ export const loginUser = (loginData: UserLogin) => {
 					...loginData,
 				}
 			);
-			dispatch({
-				type: AuthActionType.AUTH_SUCCESS,
-				payload: {
-					user: data,
-				},
-			});
-			dispatch({
-				type: ModalActionType.HIDE_MODAL,
-				payload: {},
-			});
+			dispatch(authSuccess(data));
 		} catch (err: any) {
-			console.dir(err);
-			dispatch({
-				type: AuthActionType.AUTH_FAILURE,
-				payload: {
-					errors: err.response.data.error.messages,
-				},
-			});
+			dispatch(authFailure(err.response.data.error.messages));
 		}
 	};
 };
@@ -84,17 +84,10 @@ export const logoutUser = () => {
 	return async (dispatch: Dispatch<AuthAction>) => {
 		try {
 			await axios.get('/api/auth/logout');
-			dispatch({
-				type: AuthActionType.LOGOUT_SUCCESS,
-				payload: {},
-			});
+
+			dispatch(logoutSuccess());
 		} catch (err: any) {
-			dispatch({
-				type: AuthActionType.AUTH_FAILURE,
-				payload: {
-					errors: err.response.data.error.messages,
-				},
-			});
+			dispatch(authFailure(err.response.data.error.messages));
 		}
 	};
 };
@@ -106,27 +99,12 @@ export const authenticateSession = () => {
 				'/api/auth/authenticate_session'
 			);
 			if (data.profile_name) {
-				dispatch({
-					type: AuthActionType.AUTH_SUCCESS,
-					payload: {
-						user: data,
-					},
-				});
+				dispatch(authSuccess(data));
 			} else {
-				dispatch({
-					type: AuthActionType.AUTH_FAILURE,
-					payload: {
-						errors: null,
-					},
-				});
+				dispatch(authFailure(null));
 			}
 		} catch (err: any) {
-			dispatch({
-				type: AuthActionType.AUTH_FAILURE,
-				payload: {
-					errors: err.response.data.error.messages,
-				},
-			});
+			dispatch(authFailure(err.response.data.error.messages));
 		}
 	};
 };

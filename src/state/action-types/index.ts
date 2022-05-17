@@ -25,17 +25,10 @@ export enum BundleActionType {
 
 export enum AuthActionType {
 	REGISTER_USER = 'register_user',
-	LOCAL_LOGIN = 'local_login',
-	LOGOUT_USER = 'logout_user',
 	LOGOUT_SUCCESS = 'logout_success',
 	AUTHENTICATE_SESSION = 'authenticate_session',
 	AUTH_SUCCESS = 'register_success',
 	AUTH_FAILURE = 'auth_failure',
-}
-
-export enum ModalActionType {
-	DISPLAY_MODAL = 'display_modal',
-	HIDE_MODAL = 'hide_modal',
 }
 
 export enum PagesActionType {

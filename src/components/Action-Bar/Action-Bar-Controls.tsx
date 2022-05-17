@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { CellTypes } from '../../state';
-import { useActions, useToggle } from '../../hooks';
+import { Id } from '../../state';
 import ActionButton from './Action-Button';
 import DeleteModal from '../Modals/DeleteModal';
+import { useActions, useToggle, useTypedSelector } from '../../hooks';
 
 interface ActionBarControlsProps {
-	id: number;
-	type: CellTypes;
+	id: Id;
 }
 
-const ActionBarControls: React.FC<ActionBarControlsProps> = ({ id, type }) => {
+const ActionBarControls: React.FC<ActionBarControlsProps> = ({ id }) => {
+	const cell = useTypedSelector(({ cells }) => cells.data[id]);
 	const { moveCell, deleteCell, updateSavedStatus } = useActions();
-	const [showDeleteModal, setShowDeleteModal] = useToggle();
+	const [showModal, setShowModal] = useToggle();
 
 	const onMoveUp = () => {
 		moveCell(id, 'up');
@@ -24,23 +23,21 @@ const ActionBarControls: React.FC<ActionBarControlsProps> = ({ id, type }) => {
 	};
 
 	const onDeleteCell = () => {
-		deleteCell(id, type);
-		updateSavedStatus(false);
+		deleteCell(cell);
 	};
 
 	return (
 		<div className="action-bar-end">
-			<ActionButton onClick={() => moveCell(id, 'up')} icon="fa-arrow-up" />
-			<ActionButton onClick={() => moveCell(id, 'down')} icon="fa-arrow-down" />
-			<ActionButton
-				onClick={() => setShowDeleteModal(true)}
-				icon="fa-trash-can"
-			/>
-			<DeleteModal
-				active={showDeleteModal}
-				onConfirmClick={onDeleteCell}
-				onCancelClick={() => setShowDeleteModal(false)}
-			/>
+			<ActionButton onClick={onMoveUp} icon="fa-arrow-up" />
+			<ActionButton onClick={onMoveDown} icon="fa-arrow-down" />
+			<ActionButton onClick={() => setShowModal(true)} icon="fa-trash-can" />
+			{showModal && (
+				<DeleteModal
+					active={showModal}
+					onConfirmClick={onDeleteCell}
+					onCancelClick={() => setShowModal(false)}
+				/>
+			)}
 		</div>
 	);
 };

@@ -7,10 +7,15 @@ interface LoginInputs {
 	password: string;
 }
 
-const Login = () => {
+interface LoginProps {
+	onClose: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onClose }) => {
 	const { loginUser } = useActions();
 	const onSubmitForm = (inputs: {}) => {
 		loginUser({ ...(inputs as LoginInputs) });
+		onClose();
 	};
 	return (
 		<>

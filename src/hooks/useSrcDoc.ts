@@ -30,8 +30,10 @@ export const useSrcDoc = (
     </head>
       <body>
         <div id="root"></div>
-        ${code.html || ''}
         <script>
+          const main = document.createElement('main');
+          main.innerHTML = \`${code.html || ''}\`
+          document.body.appendChild(main)
           const handleError = (err, errType='Runtime') => {
             const errText = document.createTextNode(err);
             const header = document.createElement('h4');
