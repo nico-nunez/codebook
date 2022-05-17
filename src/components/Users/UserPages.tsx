@@ -33,7 +33,7 @@ const UsersPages = () => {
 		<div className="columns">
 			{error && <div className="error-messages">{error}</div>}
 			<div className="column is-three-quarters m-auto mt-6">
-				<h1 className="is-size-3 has-text-centered">My Pages</h1>
+				<h1 className="is-size-3 has-text-centered">My Book</h1>
 				<div className="columns mt-4">{renderedUserPages}</div>
 			</div>
 		</div>

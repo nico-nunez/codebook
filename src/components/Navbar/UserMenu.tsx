@@ -18,7 +18,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
 				Profile
 			</a>
 			<a href={`/users/${currentUser.id}/pages`} onClick={onLinkClick}>
-				My Pages
+				My Book
 			</a>
 			<span
 				style={{

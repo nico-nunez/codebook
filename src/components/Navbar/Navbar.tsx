@@ -65,7 +65,7 @@ const Navbar = () => {
 							blockNav(e, () => newPage);
 						}}
 					>
-						Codebook
+						Codebooks
 					</a>
 				</div>
 				<div className="navbar-menu">
